@@ -1,0 +1,11 @@
+parameters:
+  # SiteManagementBundle actions
+  # actionname: id
+  # Make sure that keys are unique.
+  actions:
+      site_added:                       7
+      site_removed:                     8
+      site_modified:                    9
+      list_sites:                       10
+      site_default_language_changed:    11
+      site_name_changed:                12

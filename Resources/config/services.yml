@@ -1,0 +1,4 @@
+services:
+    sitemanagement.model:
+            class:        BiberLtd\Core\Bundles\SiteManagementBundle\Services\SiteManagementModel
+            arguments:    [@kernel, "default", "doctrine"]
