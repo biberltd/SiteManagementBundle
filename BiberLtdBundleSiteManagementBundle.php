@@ -1,11 +1,11 @@
 <?php
 
-namespace BiberLtd\Core\Bundles\SiteManagementBundle;
+namespace BiberLtd\Bundle\SiteManagementBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class BiberLtdCoreBundlesSiteManagementBundle extends Bundle
+class BiberLtdBundleSiteManagementBundle extends Bundle
 {
 
 }

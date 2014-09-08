@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace BiberLtd\Core\Bundles\SiteManagementBundle\Controller;
+namespace BiberLtd\Bundle\SiteManagementBundle\Controller;
 
 
 class ManageController {

@@ -18,7 +18,7 @@
  *
  */
 
-namespace BiberLtd\Core\Bundles\SiteManagementBundle\Controller;
+namespace BiberLtd\Bundle\SiteManagementBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpKernel\Exception,
