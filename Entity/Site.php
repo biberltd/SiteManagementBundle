@@ -1,7 +1,7 @@
 <?php
 /**
  * @name        Site
- * @package     BiberLtd\Core\SiteManagementBundle\Entity
+ * @package     BiberLtd\Bundle\CoreBundle\SiteManagementBundle\Entity
  *
  * @author      Can Berkol
  *              Murat Ünal
@@ -14,9 +14,9 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\SiteManagementBundle\Entity;
+namespace BiberLtd\Bundle\SiteManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
-use BiberLtd\Core\CoreEntity;
+use BiberLtd\Bundle\CoreBundle\CoreEntity;
 /**
  * @ORM\Entity
  * @ORM\Table(
@@ -72,7 +72,7 @@ class Site extends CoreEntity
     public $date_updated;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\MultiLanguageSupportBundle\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language")
      * @ORM\JoinColumn(name="default_language", referencedColumnName="id", onDelete="CASCADE")
      */
     private $language;

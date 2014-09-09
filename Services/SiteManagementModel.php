@@ -48,17 +48,17 @@
  *
  */
 
-namespace BiberLtd\Core\Bundles\SiteManagementBundle\Services;
+namespace BiberLtd\Bundle\SiteManagementBundle\Services;
 
 /** Extends CoreModel */
-use BiberLtd\Core\CoreModel;
+use BiberLtd\Bundle\CoreBundle\CoreModel;
 
 /** Required for better & instant error handling for the support team */
-use BiberLtd\Core\Exceptions as CoreExceptions;
-use BiberLtd\Core\Bundles\SiteManagementBundle\Exceptions as BundleExceptions;
+use BiberLtd\Bundle\CoreBundle\Exceptions as CoreExceptions;
+use BiberLtd\Bundle\SiteManagementBundle\Exceptions as BundleExceptions;
 
 /** Entities to be used */
-use BiberLtd\Core\Bundles\SiteManagementBundle\Entity as BundleEntity;
+use BiberLtd\Bundle\SiteManagementBundle\Entity as BundleEntity;
 
 class SiteManagementModel extends CoreModel{
     /**
