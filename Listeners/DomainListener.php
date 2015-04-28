@@ -12,10 +12,9 @@
  *
  */
 
-namespace BiberLtd\Bundle\MultiLanguageSupport\Listeners;
+namespace BiberLtd\Bundle\MultiLanguageSupportBundle\Listeners;
 
 use BiberLtd\Bundle\CoreBundle\Core as Core;
-use BiberLtd\Bundle\MultiLanguageSupportBundle\Services as MLSServices;
 use BiberLtd\Bundle\SiteManagementBundle\Services as BundleServices;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
