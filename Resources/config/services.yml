@@ -2,3 +2,11 @@ services:
     sitemanagement.model:
             class:        BiberLtd\Bundle\SiteManagementBundle\Services\SiteManagementModel
             arguments:    [@kernel, "default", "doctrine"]
+     domain.listener:
+            class:        BiberLtd\Bundle\SiteManagementBundle\Listener\DomainListener
+            arguments:    ["@sitemanagement.model", @kernel]
+            tags:
+                -
+                    name: kernel.event_listener
+                    method: onKernelRequest
+                    event: kernel.request

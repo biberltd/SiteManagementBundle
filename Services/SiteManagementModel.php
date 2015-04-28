@@ -1,51 +1,20 @@
 <?php
 /**
- * SiteManagementModel Class
- *
- * This class acts as a database proxy model for SiteManagementBundle functionalities.
- *
  * @vendor      BiberLtd
  * @package		Core\Bundles\SiteManagementBundle
  * @subpackage	Services
- * @name	    SitesManagementModel
+ * @name	    SiteManagementModel
  *
  * @author		Can Berkol
+ * @author		Said İmamoğlu
  *
  * @copyright   Biber Ltd. (www.biberltd.com)
  *
- * @version     1.0.5
- * @date        20.02.2014
+ * @version     1.0.7
+ * @date        28.05.2015
  *
  * =============================================================================================================
  * !! INSTRUCTIONS ON IMPORTANT ASPECTS OF MODEL METHODS !!!
- *
- * Each model function must return a $response ARRAY.
- * The array must contain the following keys and corresponding values.
- *
- * $response = array(
- *              'result'    =>   An array that contains the following keys:
- *                               'set'         Actual result set returned from ORM or null
- *                               'total_rows'  0 or number of total rows
- *                               'last_insert_id' The id of the item that is added last (if insert action)
- *              'error'     =>   true if there is an error; false if there is none.
- *              'code'      =>   null or a semantic and short English string that defines the error concanated
- *                               with dots, prefixed with err and the initials of the name of model class.
- *                               EXAMPLE: err.amm.action.not.found success messages have a prefix called scc..
- *
- *                               NOTE: DO NOT FORGET TO ADD AN ENTRY FOR ERROR CODE IN BUNDLE'S
- *                               RESOURCES/TRANSLATIONS FOLDER FOR EACH LANGUAGE.
- * =============================================================================================================
- * TODOs:
- * Do not forget to implement ORDER, AND PAGINATION RELATED FUNCTIONALITY
- *
- * @todo v1.0.1     list_all_sites()        uses list_sites()
- * @todo v1.0.1     list_recently_added_sites($period, $sort_order, $limit)         uses list_sites()
- * @todo v1.0.1     list_recently_updated_sites($period, $sort_order, $limit)       uses list_sites()
- * @todo v1.0.1     list_sites_in_given_language($language, $sort_order, $limit)    uses list_sites()
- * @todo v1.0.1     list_sites_added_after($date, $$sort_oder, $limit)    uses list_sites()
- * @todo v1.0.1     list_sites_added_before($date, $sort_oder, $limit)    uses list_sites()
- * @todo v1.0.1     list_sites_added_between($date_start, $date_end, $sort_oder, $limit)    uses list_sites()
- *
  */
 
 namespace BiberLtd\Bundle\SiteManagementBundle\Services;
@@ -204,6 +173,106 @@ class SiteManagementModel extends CoreModel{
     public function deleteSite($site){
         return $this->deleteSites(array($site));
     }
+	/**
+	 * @name 			getSite()
+	 *  				Returns details of a site.
+	 *
+	 * @since			1.0.0
+	 * @version         1.0.7
+	 * @author          Can Berkol
+	 *
+	 * @use             $this->listSites()
+	 *
+	 * @param           mixed           $site           Site entity or site id.
+	 * @param           string          $by             id, url_key, or domain
+	 * @return          mixed           $response
+	 */
+	public function getSite($site, $by = 'id'){
+		if($by != 'id' && $by != 'url_key' && $by != 'domain'){
+			return $this->createException('InvalidParameterException', 'id, url_key', 'invalid.parameter.by');
+		}
+		if(!is_object($site) && !is_numeric($site) && !is_string($site)){
+			return $this->createException('InvalidParameterException', 'Site entity, id, url_key, or domain', 'invalid.parameter.site');
+		}
+		if(is_object($site)){
+			if(!$site instanceof BundleEntity\Site){
+				return $this->createException('InvalidParameterException', 'Site entity, id, url_key, or domain', 'invalid.parameter.site');
+
+			}
+			$site = $site->getId();
+		}
+		$filter = array(
+			$by    =>   $site
+		);
+		$response = $this->listSites($filter, null, array('start' => 0, 'count' => 1));
+		if($response['error']){
+			return $response;
+		}
+		$collection = $response['result']['set'];
+		/**
+		 * Prepare & Return Response
+		 */
+
+		$this->response = array(
+			'rowCount' => $this->response['rowCount'],
+			'result'     => array(
+				'set'           => $collection[0],
+				'total_rows'    => 1,
+				'last_insert_id'=> null,
+			),
+			'error'      => false,
+			'code'       => 'scc.db.entry.exist',
+		);
+		return $this->response;
+	}
+	/**
+	 * @name 			getSiteByDomain()
+	 *
+	 * @since			1.0.7
+	 * @version         1.0.7
+	 * @author          Can Berkol
+	 *
+	 * @use             $this->listSites()
+	 *
+	 * @param           string			$domain
+	 *
+	 * @return          mixed           $response
+	 */
+	public function getSiteByDomain($domain){
+		if (!is_string($domain)) {
+			return $this->createException('InvalidParameterValue', 'string', 'error.invalid.parameter.domain');
+		}
+
+		$result = $this->em->getRepository($this->entity['site']['name'])
+			->findOneBy(array('domain' => $domain));
+
+		$error = true;
+		$code = 'error.db.entry.notexist';
+		$found = 0;
+		if ($result instanceof BundleEntity\Site) {
+			$error = false;
+			$code = 'success.db.entity.exist';
+			$found = 1;
+		}
+		if ($error) {
+			$result = null;
+		}
+		/**
+		 * Prepare & Return Response
+		 */
+		$this->response = array(
+			'rowCount' => $this->response['rowCount'],
+			'result' => array(
+				'set' => $result,
+				'total_rows' => $found,
+				'last_insert_id' => null,
+			),
+			'error' => $error,
+			'code' => $code,
+		);
+
+		return $this->response;
+	}
     /**
      * @name 			listSites()
      *  				List registered sites from database based on a variety of conditions.
@@ -331,58 +400,6 @@ class SiteManagementModel extends CoreModel{
             'result'     => array(
                 'set'           => $result,
                 'total_rows'    => $total_rows,
-                'last_insert_id'=> null,
-            ),
-            'error'      => false,
-            'code'       => 'scc.db.entry.exist',
-        );
-        return $this->response;
-    }
-    /**
-     * @name 			getSite()
-     *  				Returns details of a site.
-     *
-     * @since			1.0.0
-     * @version         1.0.3
-     * @author          Can Berkol
-     *
-     * @use             $this->listSites()
-     *
-     * @param           mixed           $site           Site entity or site id.
-     * @param           string          $by             id or url_key
-     * @return          mixed           $response
-     */
-    public function getSite($site, $by = 'id'){
-        if($by != 'id' && $by != 'url_key'){
-            return $this->createException('InvalidParameterException', 'id, url_key', 'invalid.parameter.by');
-        }
-        if(!is_object($site) && !is_numeric($site) && !is_string($site)){
-            return $this->createException('InvalidParameterException', 'Site entity, id, or url_key', 'invalid.parameter.site');
-        }
-        if(is_object($site)){
-            if(!$site instanceof BundleEntity\Site){
-                return $this->createException('InvalidParameterException', 'Site entity, id, or url_key', 'invalid.parameter.site');
-
-            }
-            $site = $site->getId();
-        }
-        $filter = array(
-            $by    =>   $site
-        );
-        $response = $this->listSites($filter, null, array('start' => 0, 'count' => 1));
-        if($response['error']){
-            return $response;
-        }
-        $collection = $response['result']['set'];
-        /**
-         * Prepare & Return Response
-         */
-        
-        $this->response = array(
-	    'rowCount' => $this->response['rowCount'],
-            'result'     => array(
-                'set'           => $collection[0],
-                'total_rows'    => 1,
                 'last_insert_id'=> null,
             ),
             'error'      => false,
@@ -767,10 +784,18 @@ class SiteManagementModel extends CoreModel{
 /**
  * Change Log
  * **************************************
- * v1.0.6                      Said İmamoğlu
+ * v1.0.7                      28.04.2015
+ * TW #
+ * Can Berkol
+ * **************************************
+ * A getSiteByDomain()
+ * Y getSite()
+ *
+ * **************************************
+ * v1.0.6                   Said İmamoğlu
  * 21.02.2014
  * **************************************
- * A getDefaultLanguage
+ * A getDefaultLanguage()
  * 
  * **************************************
  * v1.0.5                      Can Berkol

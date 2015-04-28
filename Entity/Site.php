@@ -5,8 +5,8 @@
  *
  * @author      Can Berkol
  *              Murat Ünal
- * @version     1.0.4
- * @date        25.01.2014
+ * @version     1.0.5
+ * @date        27.04.2015
  *
  * @copyright   Biber Ltd. (http://www.biberltd.com)
  * @license     GPL v3.0
@@ -23,12 +23,13 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  *     name="site",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
  *     indexes={
- *         @ORM\Index(name="idx_n_site_date_added", columns={"date_added"}),
- *         @ORM\Index(name="idx_n_site_date_updated", columns={"date_updated"})
+ *         @ORM\Index(name="idxNSiteDateAdded", columns={"date_added"}),
+ *         @ORM\Index(name="idxNSiteDateUpdated", columns={"date_updated"}),
+ *         @ORM\Index(name="idxNSiteDateRemoved", columns={"date_removed"})
  *     },
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="idx_u_site_id", columns={"id"}),
- *         @ORM\UniqueConstraint(name="idx_u_site_url_key", columns={"url_key"})
+ *         @ORM\UniqueConstraint(name="idxUSiteId", columns={"id"}),
+ *         @ORM\UniqueConstraint(name="idxUSiteUrlKey", columns={"url_key"})
  *     }
  * )
  */
@@ -70,6 +71,16 @@ class Site extends CoreEntity
      * @ORM\Column(type="datetime", nullable=false)
      */
     public $date_updated;
+
+	/**
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
+	public $date_removed;
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $domain;
 
     /**
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language")
@@ -238,8 +249,7 @@ class Site extends CoreEntity
 
     /**
      * @name            getTitle ()
-     *                           Returns the value of title property.
-     *
+	 *
      * @author          Can Berkol
      *
      * @since           1.0.0
@@ -252,10 +262,8 @@ class Site extends CoreEntity
     }
 
     /**
-     * @name                  setUrlKey ()
-     *                                  Sets the url_key property.
-     *                                  Updates the data only if stored value and value to be set are different.
-     *
+     * @name            setUrlKey ()
+	 *
      * @author          Can Berkol
      *
      * @since           1.0.0
@@ -277,7 +285,7 @@ class Site extends CoreEntity
 
     /**
      * @name            getUrlKey ()
-     *                            Returns the value of url_key property.
+     *                  Returns the value of url_key property.
      *
      * @author          Can Berkol
      *
@@ -289,9 +297,50 @@ class Site extends CoreEntity
     public function getUrlKey() {
         return $this->url_key;
     }
+	/**
+	 * @name        getDomain ()
+	 *
+	 * @author      Can Berkol
+	 *
+	 * @since       1.0.5
+	 * @version     1.0.5
+	 *
+	 * @return      mixed
+	 */
+	public function getDomain() {
+		return $this->domain;
+	}
+
+	/**
+	 * @name        setDomain ()
+	 *
+	 * @author      Can Berkol
+	 *
+	 * @since       1.0.5
+	 * @version     1.0.5
+	 *
+	 * @param       mixed $domain
+	 *
+	 * @return      $this
+	 */
+	public function setDomain($domain) {
+		if (!$this->setModified('domain', $domain)->isModified()) {
+			return $this;
+		}
+		$this->domain = $domain;
+
+		return $this;
+	}
 }
 /**
  * Change Log:
+ * **************************************
+ * v1.0.5                      Can Berkol
+ * 27.04.2015
+ * **************************************
+ * A getDomain()
+ * A setDomain()
+ *
  * **************************************
  * v1.0.4                      Can Berkol
  * 25.01.2014

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<skipper version="3.0.0.1104" mvc="Symfony2" orm="Doctrine2">
+<skipper version="3.1.2.1193" mvc="Symfony2" orm="Doctrine2">
   <module name="SiteManagementBundle" import-format="Doctrine2Php" import-path="../Entity" uuid="860bb986-ef71-4cef-9da2-f560e58c2569">
     <entity name="Site" description="Stores site definitions." uuid="45fa10e6-64bd-4726-82aa-61fd301b1b5f">
       <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="bc017c6b-132e-4cb4-b4d5-fe7363303a48"/>
@@ -10,17 +10,22 @@
       <field name="settings" description="Base64 Encoded and serialized site settings information." type="text" uuid="4a4bef14-73af-4f62-af06-18c26dd1b125"/>
       <field name="date_added" description="Date when the site is first added." type="datetime" required="true" uuid="5dfe56f7-1eba-4492-9275-1cc2ee106c55"/>
       <field name="date_updated" description="Date when the site's details last added." type="datetime" required="true" uuid="392dc78f-5653-437b-bd17-e5d56ffc9241"/>
-      <index name="idx_u_site_id" description="Site id must be unique." unique="true">
+      <field name="date_removed" description="Date when the entry is removed." type="datetime" uuid="a763526b-555a-40f5-bec2-8d8113da41f2"/>
+      <field name="domain" description="Domain of the site if a domain controller is used." type="text" uuid="bd028fe9-8566-4139-938d-00f7734b08f6"/>
+      <index name="idxUSiteId" description="Site id must be unique." unique="true">
         <index-field name="id"/>
       </index>
-      <index name="idx_u_site_url_key" description="Site url key must be unique." unique="true">
+      <index name="idxUSiteUrlKey" description="Site url key must be unique." unique="true">
         <index-field name="url_key"/>
       </index>
-      <index name="idx_n_site_date_added">
+      <index name="idxNSiteDateAdded">
         <index-field name="date_added"/>
       </index>
-      <index name="idx_n_site_date_updated">
+      <index name="idxNSiteDateUpdated">
         <index-field name="date_updated"/>
+      </index>
+      <index name="idxNSiteDateRemoved">
+        <index-field name="date_removed"/>
       </index>
       <orm-attributes>
         <attribute name="options">
@@ -32,7 +37,7 @@
         <attribute name="export-file-name">Site.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="Site" to="Language" caption="idx_f_site_language" inverse-alias="language" uuid="cf9e9be0-387f-4d73-8bd0-27d96fe71703">
+    <association from="Site" to="Language" caption="idxFDefaultLanguageOfSite" inverse-alias="language" many-owner="true" many-inverse="false" uuid="cf9e9be0-387f-4d73-8bd0-27d96fe71703">
       <association-field from="default_language" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -40,14 +45,14 @@
     </association>
     <comment caption="SiteManagementModule Pricing" description="site: 185 TL&#10;&#10;toplam: 185 TL" uuid="75fee309-7fb5-42be-aec0-cb05de5acb53"/>
     <orm-attributes>
-      <attribute name="namespace">BiberLtd\Bundle\SiteManagementBundle\Entity</attribute>
+      <attribute name="namespace">BiberLtd\Core\Bundles\SiteManagementBundle\Entity</attribute>
       <attribute name="file-suffix">without-suffix</attribute>
       <attribute name="filename-format">entity-name-only</attribute>
     </orm-attributes>
   </module>
   <visual-data>
-    <entity uuid="45fa10e6-64bd-4726-82aa-61fd301b1b5f" bg-color="4294967295" hdr-color="4292006610" position-x="221" position-y="42" size-x="0" size-x2="148" size-y="0" size-y2="129"/>
+    <entity uuid="45fa10e6-64bd-4726-82aa-61fd301b1b5f" bg-color="4294967295" hdr-color="4292006610" position-x="199" position-y="50" size-x="0" size-x2="148" size-y="0" size-y2="129"/>
     <comment uuid="75fee309-7fb5-42be-aec0-cb05de5acb53" bg-color="4294951085" position-x="0" position-y="18" size-x="0" size-x2="150" size-y="0" size-y2="56" txt-color="4278190080"/>
-    <module uuid="860bb986-ef71-4cef-9da2-f560e58c2569" bg-color="4291231744" size-x="0" size-x2="450" size-y="0" size-y2="200"/>
+    <module uuid="860bb986-ef71-4cef-9da2-f560e58c2569" bg-color="4291231744" size-x="0" size-x2="450" size-y="0" size-y2="227"/>
   </visual-data>
 </skipper>
