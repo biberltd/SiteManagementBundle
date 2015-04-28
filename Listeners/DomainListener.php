@@ -74,7 +74,7 @@ class DomainListener extends Core{
 		$response = $this->siteManagement->getSiteByDomain($currentDomain);
 
 		if($response['error']){
-			$this->kernel->getContainer()->get('session')->set('_currentSiteId', '');
+			$this->kernel->getContainer()->get('session')->set('_currentSiteId', 1);
 		}
 
 		$site = $response['result']['set'];
