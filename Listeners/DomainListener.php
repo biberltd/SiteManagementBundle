@@ -7,12 +7,12 @@
  *
  * @author		Can Berkol
  *
- * @version     1.0.0
- * @date        27.05.2015
+ * @version     1.0.1
+ * @date        30.04.2015
  *
  */
 
-namespace BiberLtd\Bundle\MultiLanguageSupportBundle\Listeners;
+namespace BiberLtd\Bundle\SiteManagementBundle\Listeners;
 
 use BiberLtd\Bundle\CoreBundle\Core as Core;
 use BiberLtd\Bundle\SiteManagementBundle\Services as BundleServices;
@@ -61,7 +61,7 @@ class DomainListener extends Core{
      * @author          Can Berkol
      *
      * @since			1.0.0
-     * @version         1.0.0
+     * @version         1.0.1
      *
      * @param 			GetResponseEvent 	        $e
      *
@@ -75,17 +75,27 @@ class DomainListener extends Core{
 
 		if($response['error']){
 			$this->kernel->getContainer()->get('session')->set('_currentSiteId', 1);
+			return;
 		}
 
 		$site = $response['result']['set'];
 
 		$this->kernel->getContainer()->get('session')->set('_currentSiteId', $site->getId());
+		return;
     }
 }
 /**
  * Change Log
  * ****************************************
- * v1.0.0						26.04.2015
+ * v1.0.1						30.04.2015
+ * TW #
+ * Can Berkol
+ * ****************************************
+ * BF :: Namespace fixed.
+ * BF :: onKernelRequest :: The code wasn't returning on error.
+ *
+ * ****************************************
+ * v1.0.0						27.04.2015
  * TW #
  * Can Berkol
  * ****************************************
