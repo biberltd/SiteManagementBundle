@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2015-04-28 11:24:15
+Date: 2015-04-30 21:48:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,7 @@ CREATE TABLE `site` (
   `title` varchar(155) COLLATE utf8_turkish_ci NOT NULL COMMENT 'Title of the site.',
   `url_key` varchar(255) COLLATE utf8_turkish_ci NOT NULL COMMENT 'Url key of site.',
   `description` varchar(255) COLLATE utf8_turkish_ci DEFAULT NULL COMMENT 'Short description of site.',
-  `default_language` int(5) unsigned NOT NULL COMMENT 'Default language of the site.',
+  `default_language` int(5) unsigned DEFAULT NULL COMMENT 'Default language of the site.',
   `settings` text COLLATE utf8_turkish_ci COMMENT 'Base64 Encoded and serialized site settings information.',
   `date_added` datetime NOT NULL COMMENT 'Date when the site is added.',
   `date_updated` datetime NOT NULL COMMENT 'Date when the site''s details last updated.',
