@@ -3,7 +3,7 @@ services:
             class:        BiberLtd\Bundle\SiteManagementBundle\Services\SiteManagementModel
             arguments:    [@kernel, "default", "doctrine"]
     domain.listener:
-            class:        BiberLtd\Bundle\SiteManagementBundle\Listener\DomainListener
+            class:        BiberLtd\Bundle\SiteManagementBundle\Listeners\DomainListener
             arguments:    ["@sitemanagement.model", @kernel]
             tags:
                 -
