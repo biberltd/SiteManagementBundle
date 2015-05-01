@@ -7,8 +7,8 @@
  *
  * @author		Can Berkol
  *
- * @version     1.0.1
- * @date        30.04.2015
+ * @version     1.0.2
+ * @date        01.05.2015
  *
  */
 
@@ -19,12 +19,8 @@ use BiberLtd\Bundle\SiteManagementBundle\Services as BundleServices;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class DomainListener extends Core{
-    private     $container;
-    private     $languages;
-	private		$ignoreList;
     /**
      * @name            __construct()
-     *                  Constructor.
      *
      * @author          Can Berkol
      *
@@ -41,7 +37,6 @@ class DomainListener extends Core{
     }
     /**
      * @name            __destruct()
-     *                  Destructor.
      *
      * @author          Can Berkol
      *
@@ -56,12 +51,11 @@ class DomainListener extends Core{
     }
     /**
      * @name 			onKernelRequest()
-     *  				Called onKernelRequest event and handles browser language detection.
      *
      * @author          Can Berkol
      *
      * @since			1.0.0
-     * @version         1.0.1
+     * @version         1.0.5
      *
      * @param 			GetResponseEvent 	        $e
      *
@@ -73,12 +67,12 @@ class DomainListener extends Core{
 
 		$response = $this->siteManagement->getSiteByDomain($currentDomain);
 
-		if($response['error']){
+		if($response->error->exists){
 			$this->kernel->getContainer()->get('session')->set('_currentSiteId', 1);
 			return;
 		}
 
-		$site = $response['result']['set'];
+		$site = $response->result->set;
 
 		$this->kernel->getContainer()->get('session')->set('_currentSiteId', $site->getId());
 		return;
@@ -87,8 +81,13 @@ class DomainListener extends Core{
 /**
  * Change Log
  * ****************************************
+ * v1.0.2						01.05.2015
+ * Can Berkol
+ * ****************************************
+ * CR :: Changes made to be compatible with CoreBundle v3.3
+ *
+ * ****************************************
  * v1.0.1						30.04.2015
- * TW #
  * Can Berkol
  * ****************************************
  * BF :: Namespace fixed.
