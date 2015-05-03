@@ -136,7 +136,7 @@ class SiteManagementModel extends CoreModel{
 	 * @param           mixed           $site           Site entity or site id.
 	 * @param           bool            $bypass         If set to true does not return response but only the result.
 	 *
-	 * @return          mixed           $response
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function doesSiteExist($site, $bypass = false) {
 		$timeStamp = time();
@@ -214,7 +214,7 @@ class SiteManagementModel extends CoreModel{
 			case is_string($site):
 				$result = $this->em->getRepository($this->entity['s']['name'])->findOneBy(array('url_key' => $site));
 				if(is_null($result)){
-					$result = $this->em->getRepository($this->entity['l']['name'])->findOneBy(array('domain' => $site));
+					$result = $this->em->getRepository($this->entity['s']['name'])->findOneBy(array('domain' => $site));
 				}
 				break;
 		}
@@ -428,7 +428,7 @@ class SiteManagementModel extends CoreModel{
 	 *
 	 * @param           array           $site      Site Entity or a collection of post input that stores site details.
 	 *
-	 * @return          array           $response
+	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateSite($site){
 		return $this->updateSites(array($site));
@@ -509,12 +509,11 @@ class SiteManagementModel extends CoreModel{
         }
 		if($countUpdates > 0){
 			$this->em->flush();
-			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
+		return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
 		}
 		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
     }
 }
-
 /**
  * Change Log
  * **************************************
