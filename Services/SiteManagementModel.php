@@ -219,7 +219,7 @@ class SiteManagementModel extends CoreModel{
 				break;
 		}
 		if(is_null($result)){
-			return new ModelResponse($result, 1, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
 		}
 
 		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
@@ -474,11 +474,11 @@ class SiteManagementModel extends CoreModel{
                 if(!property_exists($data, 'default_language')){
                     $data->default_language = 1;
                 }
-                $response = $this->getSite($data->id, 'id');
-                if($response['error']){
+                $response = $this->getSite($data->id);
+                if($response->error->exist){
 					return $this->createException('EntityDoesNotExist', 'Site with id '.$data->id, 'E:D:002');
                 }
-                $oldEntity = $response['result']['set'];
+                $oldEntity = $response->result->set;
                 foreach($data as $column => $value){
                     $set = 'set'.$this->translateColumnName($column);
                     switch($column){
@@ -507,9 +507,6 @@ class SiteManagementModel extends CoreModel{
                 }
             }
         }
-        if($countUpdates > 0){
-            $this->em->flush();
-        }
 		if($countUpdates > 0){
 			$this->em->flush();
 			return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, time());
@@ -524,7 +521,7 @@ class SiteManagementModel extends CoreModel{
  * v1.0.8                      01.05.2015
  * Can Berkol
  * **************************************
- * CR :: Made compatibe with BiberLtd\Bundle\CoreBundle v3.3.
+ * CR :: Made compatible with BiberLtd\Bundle\CoreBundle v3.3.
  *
  * **************************************
  * v1.0.7                      28.04.2015
