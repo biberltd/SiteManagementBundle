@@ -21,6 +21,7 @@ use BiberLtd\Bundle\CoreBundle\CoreModel;
 
 /** Required for better & instant error handling for the support team */
 use BiberLtd\Bundle\CoreBundle\Exceptions as CoreExceptions;
+use BiberLtd\Bundle\CoreBundle\Responses\ModelResponse;
 use BiberLtd\Bundle\SiteManagementBundle\Exceptions as BundleExceptions;
 
 /** Entities to be used */
@@ -518,6 +519,7 @@ class SiteManagementModel extends CoreModel{
  * Can Berkol
  * **************************************
  * BF :: db_connection is replaced with dbConnection
+ * BF :: Use statement for ModelResponse has been added to header.
  *
  * **************************************
  * v1.0.8                      01.05.2015

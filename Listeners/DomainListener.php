@@ -7,8 +7,8 @@
  *
  * @author		Can Berkol
  *
- * @version     1.0.2
- * @date        01.05.2015
+ * @version     1.0.3
+ * @date        25.05.2015
  *
  */
 
@@ -67,7 +67,7 @@ class DomainListener extends Core{
 
 		$response = $this->siteManagement->getSiteByDomain($currentDomain);
 
-		if($response->error->exists){
+		if($response->error->exist){
 			$this->kernel->getContainer()->get('session')->set('_currentSiteId', 1);
 			return;
 		}
@@ -80,6 +80,12 @@ class DomainListener extends Core{
 }
 /**
  * Change Log
+ * ****************************************
+ * v1.0.3						25.05.2015
+ * Can Berkol
+ * ****************************************
+ * BF :: Typo fixed ($this->error->exists to $this->error->exist)
+ *
  * ****************************************
  * v1.0.2						01.05.2015
  * Can Berkol
