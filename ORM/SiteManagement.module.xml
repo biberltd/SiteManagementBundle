@@ -45,6 +45,6 @@
   </module>
   <visual-data>
     <entity uuid="45fa10e6-64bd-4726-82aa-61fd301b1b5f" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="42" position-y="50" size-x="0" size-x2="148" size-y="0" size-y2="157"/>
-    <module uuid="860bb986-ef71-4cef-9da2-f560e58c2569" bg-color="#7E7975" size-x="0" size-x2="450" size-y="0" size-y2="227"/>
+    <module uuid="860bb986-ef71-4cef-9da2-f560e58c2569" bg-color="#7E7975" size-x="0" size-x2="450" size-y="0" size-y2="327"/>
   </visual-data>
 </skipper>
