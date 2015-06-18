@@ -58,6 +58,11 @@ class Site extends CoreEntity
     private $description;
 
     /**
+     * @ORM\Column(type="smallint", length=5, nullable=true)
+     */
+    private $default_language;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $settings;
@@ -81,12 +86,6 @@ class Site extends CoreEntity
 	 * @ORM\Column(type="text", nullable=true)
 	 */
 	private $domain;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language")
-     * @ORM\JoinColumn(name="default_language", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $language;
 
     /******************************************************************
      * PUBLIC SET AND GET FUNCTIONS                                   *
@@ -165,13 +164,12 @@ class Site extends CoreEntity
         if(!$this->setModified('language', $language)->isModified()) {
             return $this;
         }
-		$this->language = $language;
+		$this->default_language = $language;
 		return $this;
     }
 
     /**
      * @name            getLanguage ()
-     *                              Returns the value of language property.
      *
      * @author          Can Berkol
      *
@@ -181,13 +179,11 @@ class Site extends CoreEntity
      * @return          mixed           $this->language
      */
     public function getLanguage() {
-        return $this->language;
+        return $this->default_language;
     }
 
     /**
      * @name                  setSettings ()
-     *                                    Sets the settings property.
-     *                                    Updates the data only if stored value and value to be set are different.
      *
      * @author          Can Berkol
      *
