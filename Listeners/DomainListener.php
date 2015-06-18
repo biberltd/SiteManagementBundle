@@ -7,8 +7,8 @@
  *
  * @author		Can Berkol
  *
- * @version     1.0.1
- * @date        30.04.2015
+ * @version     1.0.2
+ * @date        18.06.2015
  *
  */
 
@@ -61,7 +61,7 @@ class DomainListener extends Core{
      * @author          Can Berkol
      *
      * @since			1.0.0
-     * @version         1.0.1
+     * @version         1.0.2
      *
      * @param 			GetResponseEvent 	        $e
      *
@@ -69,23 +69,29 @@ class DomainListener extends Core{
     public function onKernelRequest(\Symfony\Component\HttpKernel\Event\GetResponseEvent $e){
         $request = $e->getRequest();
 
-		$currentDomain = $request->getHttpHost();
+        $currentDomain = $request->getHttpHost();
 
-		$response = $this->siteManagement->getSiteByDomain($currentDomain);
+        $response = $this->siteManagement->getSiteByDomain(str_replace('www.', '', $currentDomain));
 
-		if($response['error']){
-			$this->kernel->getContainer()->get('session')->set('_currentSiteId', 1);
-			return;
-		}
+        if($response->error->exist){
+            $this->kernel->getContainer()->get('session')->set('_currentSiteId', 1);
+            return;
+        }
 
-		$site = $response['result']['set'];
+        $site = $response->result->set;
 
-		$this->kernel->getContainer()->get('session')->set('_currentSiteId', $site->getId());
-		return;
+        $this->kernel->getContainer()->get('session')->set('_currentSiteId', $site->getId());
+        return;
     }
 }
 /**
  * Change Log
+ * ****************************************
+ * v1.0.2						18.06.2015
+ * Can Berkol
+ * ****************************************
+ * BF :: Now strips www.
+ *
  * ****************************************
  * v1.0.1						30.04.2015
  * TW #
