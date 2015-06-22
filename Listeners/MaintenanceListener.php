@@ -7,7 +7,7 @@
  *
  * @author		Can Berkol
  *
- * @version     1.0.0
+ * @version     1.0.1
  * @date        22.06.2015
  *
  */
@@ -67,39 +67,38 @@ class MaintenanceListener extends Core{
 
         $currentDomain = $request->getHttpHost();
 
-        $response = $this->siteManagement->getSiteByDomain(str_replace('www.', '', $currentDomain));
-        $routeName = $request->get('_route');
-        if(!$response->error->exist){
-            $settings = json_decode($response->result->set->getSettings());
-            if(is_object($settings) && isset($settings->maintenance) && $settings->maintenance == true){
+        $this->session = $this->kernel->getContainer()->get('session');
+        if(!$this->session->get('is_logged_in')){
+            $response = $this->siteManagement->getSiteByDomain(str_replace('www.', '', $currentDomain));
+            $routeName = $request->get('_route');
+            if(!$response->error->exist){
+                $settings = json_decode($response->result->set->getSettings());
+                if(is_object($settings) && isset($settings->maintenance) && $settings->maintenance == true){
+                    $url = $this->kernel->getContainer()->get('router')->generate($this->kernel->getContainer()->getParameter('maintenance_route'), array(), UrlGeneratorInterface::ABSOLUTE_PATH);
+                    if($this->kernel->getContainer()->getParameter('maintenance_route') != $routeName){
+                        $e->setResponse(new RedirectResponse($url));
+                    }
+                }
+            }
+            if($this->kernel->getContainer()->getParameter('maintenance') !== null && $this->kernel->getContainer()->getParameter('maintenance') === true){
                 $url = $this->kernel->getContainer()->get('router')->generate($this->kernel->getContainer()->getParameter('maintenance_route'), array(), UrlGeneratorInterface::ABSOLUTE_PATH);
                 if($this->kernel->getContainer()->getParameter('maintenance_route') != $routeName){
                     $e->setResponse(new RedirectResponse($url));
                 }
             }
         }
-        if($this->kernel->getContainer()->getParameter('maintenance') !== null && $this->kernel->getContainer()->getParameter('maintenance') === true){
-            $url = $this->kernel->getContainer()->get('router')->generate($this->kernel->getContainer()->getParameter('maintenance_route'), array(), UrlGeneratorInterface::ABSOLUTE_PATH);
-            if($this->kernel->getContainer()->getParameter('maintenance_route') != $routeName){
-                $e->setResponse(new RedirectResponse($url));
-            }
-        }
-
-        if($response->error->exist){
-            $this->kernel->getContainer()->get('session')->set('_currentSiteId', 1);
-            return;
-        }
-
-        $site = $response->result->set;
-
-
-        $this->kernel->getContainer()->get('session')->set('_currentSiteId', $site->getId());
     }
 }
 /**
  * Change Log
  * ****************************************
- * v1.0.0						 22.06.2015
+ * v1.0.1						 22.06.2015
+ * Can Berkol
+ * ****************************************
+ * FR :: Maintenance mode now allows logged-in access.
+ *
+ * ****************************************
+ * v1.0.0						 21.06.2015
  * Can Berkol
  * ****************************************
  * File is created.
