@@ -68,19 +68,21 @@ class MaintenanceListener extends Core{
         $currentDomain = $request->getHttpHost();
 
         $response = $this->siteManagement->getSiteByDomain(str_replace('www.', '', $currentDomain));
-
+        $routeName = $request->get('_route');
         if(!$response->error->exist){
             $settings = json_decode($response->result->set->getSettings());
             if(is_object($settings) && isset($settings->maintenance) && $settings->maintenance == true){
                 $url = $this->kernel->getContainer()->get('router')->generate($this->kernel->getContainer()->getParameter('maintenance_route'), array(), UrlGeneratorInterface::ABSOLUTE_PATH);
-                $e->setResponse(new RedirectResponse($url));
+                if($this->kernel->getContainer()->getParameter('maintenance_route') != $routeName){
+                    $e->setResponse(new RedirectResponse($url));
+                }
             }
         }
-
-        if($this->kernel->getContainer()->getParameter('maintenance') !== null && $this->kernel->getContainer()->getParameter('maintenance') == true){
+        if($this->kernel->getContainer()->getParameter('maintenance') !== null && $this->kernel->getContainer()->getParameter('maintenance') === true){
             $url = $this->kernel->getContainer()->get('router')->generate($this->kernel->getContainer()->getParameter('maintenance_route'), array(), UrlGeneratorInterface::ABSOLUTE_PATH);
-
-            $e->setResponse(new RedirectResponse($url));
+            if($this->kernel->getContainer()->getParameter('maintenance_route') != $routeName){
+                $e->setResponse(new RedirectResponse($url));
+            }
         }
 
         if($response->error->exist){
