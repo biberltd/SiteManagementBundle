@@ -16,13 +16,8 @@
         }
     ],
     "require": {
-<<<<<<< HEAD
-        "biberltd/core-bundle" : "self.version",
-		"biberltd/multilanguage-support-bundle" : "self.version"
-=======
         "biberltd/core-bundle" : "~3.3",
 		"biberltd/multilanguage-support-bundle" : "~3.3"
->>>>>>> origin/3.3
     },
     "autoload": {
         "psr-0": { "BiberLtd\\Bundle\\SiteManagementBundle": "" }
