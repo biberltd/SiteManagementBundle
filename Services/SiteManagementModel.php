@@ -10,8 +10,8 @@
  *
  * @copyright   Biber Ltd. (www.biberltd.com)
  *
- * @version     1.0.9
- * @date        25.05.2015
+ * @version     1.1.0
+ * @date        24.06.2015
  */
 
 namespace BiberLtd\Bundle\SiteManagementBundle\Services;
@@ -314,7 +314,7 @@ class SiteManagementModel extends CoreModel{
 					case 'date_added':
 					case 'date_updated':
 					case 'date_removed':
-						$column = $this->entity['l']['alias'].'.'.$column;
+						$column = $this->entity['s']['alias'].'.'.$column;
 						break;
 					default:
 						break;
@@ -514,6 +514,12 @@ class SiteManagementModel extends CoreModel{
 }
 /**
  * Change Log
+ * **************************************
+ * v1.1.0                      24.06.2015
+ * Can Berkol
+ * **************************************
+ * BF :: listSites() has an invalid alias "l". It is replaced with "s".
+ *
  * **************************************
  * v1.0.9                      25.05.2015
  * Can Berkol
