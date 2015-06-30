@@ -10,8 +10,8 @@
  *
  * @copyright   Biber Ltd. (www.biberltd.com)
  *
- * @version     1.1.0
- * @date        24.06.2015
+ * @version     1.1.1
+ * @date        30.06.2015
  */
 
 namespace BiberLtd\Bundle\SiteManagementBundle\Services;
@@ -161,7 +161,7 @@ class SiteManagementModel extends CoreModel{
 	 * @name 			getDefaultLanguageOfSite()
 	 *
 	 * @since			1.0.6
-	 * @version         1.0.8
+	 * @version         1.1.1
 	 * @author          Said İmamoğlu
 	 *
 	 * @use             $this->getSite()
@@ -171,21 +171,28 @@ class SiteManagementModel extends CoreModel{
 	 *
 	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getDefaultLanguageOfSite($site, $bypass = false){
-		$timeStamp = time();
-		$response = $this->getSite($site);
-		if($response->error->exist){
-			return $response;
-		}
+    public function getDefaultLanguageOfSite($site, $bypass = false){
+        $timeStamp = time();
+        $response = $this->getSite($site);
+        if($response->error->exist){
+            return $response;
+        }
+        $language = $response->result->set->getLanguage();
+        if(is_null($language)){
+            return new ModelResponse(null, 1, 0, null, error, 'E:S:005', 'Default language is not set.', $timeStamp, time());
+        }
 
-		if($bypass){
-			return $response->result->set->getLanguage();
-		}
-		if(is_null($response->result->set->getLanguage())){
-			return new ModelResponse(null, 1, 0, null, error, 'E:S:005', 'Default language is not set.', $timeStamp, time());
-		}
-		return new ModelResponse($response->result->set->getLanguage(), 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
-	}
+        $lModel= $this->kernel->getContainer()->get('multilanguagesupport.model');
+        $lResponse = $lModel->getLanguage($language);
+        if ($lResponse->error->exist) {
+            return $lResponse;
+        }
+        $language = $lResponse->result->set;
+        if($bypass){
+            $language;
+        }
+        return new ModelResponse($language, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+    }
 	/**
 	 * @name 			getSite()
 	 *
@@ -514,6 +521,11 @@ class SiteManagementModel extends CoreModel{
 }
 /**
  * Change Log
+ * **************************************
+ * v1.1.1                     30.06.2015
+ * Said İmamoğlu
+ * **************************************
+ * BF :: getDefaultLanguageOfSite() was returning only int. It replaced with language entity.
  * **************************************
  * v1.1.0                      24.06.2015
  * Can Berkol
