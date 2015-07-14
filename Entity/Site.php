@@ -5,8 +5,8 @@
  *
  * @author      Can Berkol
  *              Murat Ünal
- * @version     1.0.5
- * @date        27.04.2015
+ * @version     1.0.7
+ * @date        14.07.2015
  *
  * @copyright   Biber Ltd. (http://www.biberltd.com)
  * @license     GPL v3.0
@@ -33,8 +33,7 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  *     }
  * )
  */
-class Site extends CoreEntity
-{
+class Site extends CoreEntity{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
@@ -87,13 +86,13 @@ class Site extends CoreEntity
 	 */
 	private $domain;
 
-    /******************************************************************
-     * PUBLIC SET AND GET FUNCTIONS                                   *
-     ******************************************************************/
+	/**
+	 * @ORM\OneToMany(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\DomainAliases", mappedBy="site")
+	 */
+	private $domains;
 
     /**
      * @name            getId()
-     *                  Gets $id property.
      * .
      * @author          Murat Ünal
      * @since           1.0.0
@@ -106,10 +105,8 @@ class Site extends CoreEntity
     }
 
     /**
-     * @name                  setDescription ()
-     *                                       Sets the description property.
-     *                                       Updates the data only if stored value and value to be set are different.
-     *
+     * @name            setDescription ()
+	 *
      * @author          Can Berkol
      *
      * @since           1.0.0
@@ -131,7 +128,6 @@ class Site extends CoreEntity
 
     /**
      * @name            getDescription ()
-     *                                 Returns the value of description property.
      *
      * @author          Can Berkol
      *
@@ -145,14 +141,12 @@ class Site extends CoreEntity
     }
 
     /**
-     * @name                  setLanguage ()
-     *                                    Sets the language property.
-     *                                    Updates the data only if stored value and value to be set are different.
+     * @name            setLanguage ()
      *
      * @author          Can Berkol
      *
      * @since           1.0.0
-     * @version         1.0.0
+	 * @version         1.0.6
      *
      * @use             $this->setModified()
      *
@@ -160,8 +154,8 @@ class Site extends CoreEntity
      *
      * @return          object                $this
      */
-    public function setLanguage($language) {
-        if(!$this->setModified('language', $language)->isModified()) {
+    public function setDefaultLanguage($language) {
+        if(!$this->setModified('default_language', $language)->isModified()) {
             return $this;
         }
 		$this->default_language = $language;
@@ -169,21 +163,21 @@ class Site extends CoreEntity
     }
 
     /**
-     * @name            getLanguage ()
+     * @name            getDefaultLanguage ()
      *
      * @author          Can Berkol
      *
      * @since           1.0.0
-     * @version         1.0.0
+     * @version         1.0.6
      *
      * @return          mixed           $this->language
      */
-    public function getLanguage() {
+    public function getDefaultLanguage() {
         return $this->default_language;
     }
 
     /**
-     * @name                  setSettings ()
+     * @name            setSettings ()
      *
      * @author          Can Berkol
      *
@@ -206,7 +200,6 @@ class Site extends CoreEntity
 
     /**
      * @name            getSettings ()
-     *                              Returns the value of settings property.
      *
      * @author          Can Berkol
      *
@@ -220,9 +213,7 @@ class Site extends CoreEntity
     }
 
     /**
-     * @name                  setTitle ()
-     *                                 Sets the title property.
-     *                                 Updates the data only if stored value and value to be set are different.
+     * @name            setTitle ()
      *
      * @author          Can Berkol
      *
@@ -327,9 +318,57 @@ class Site extends CoreEntity
 
 		return $this;
 	}
+
+	/**
+	 * @name        getDomains ()
+	 *
+	 * @author      Can Berkol
+	 *
+	 * @since       1.0.7
+	 * @version     1.0.7
+	 *
+	 * @return      mixed
+	 */
+	public function getDomains() {
+		return $this->domains;
+	}
+
+	/**
+	 * @name        setDomains ()
+	 *
+	 * @author      Can Berkol
+	 *
+	 * @since       1.0.7
+	 * @version     1.0.7
+	 *
+	 * @param       mixed $domains
+	 *
+	 * @return      $this
+	 */
+	public function setDomains($domains) {
+		if (!$this->setModified('domains', $domains)->isModified()) {
+			return $this;
+		}
+		$this->domains = $domains;
+
+		return $this;
+	}
+
 }
 /**
  * Change Log:
+ * **************************************
+ * v1.0.7                      14.07.2015
+ * Can Berkol
+ * **************************************
+ * FR :: domains property added.
+ *
+ * **************************************
+ * v1.0.6                      07.07.2015
+ * Can Berkol
+ * **************************************
+ * BF :: setLanguage was trying to set "language" key instead of "default_language" key. Fixed.
+ *
  * **************************************
  * v1.0.5                      Can Berkol
  * 27.04.2015

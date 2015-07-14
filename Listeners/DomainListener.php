@@ -7,8 +7,8 @@
  *
  * @author		Can Berkol
  *
- * @version     1.0.4
- * @date        18.06.2015
+ * @version     1.0.5
+ * @date        14.07.2015
  *
  */
 
@@ -67,7 +67,6 @@ class DomainListener extends Core{
 
         $response = $this->siteManagement->getSiteByDomain(str_replace('www.', '', $currentDomain));
 
-
 		if($response->error->exist){
 			$this->kernel->getContainer()->get('session')->set('_currentSiteId', 1);
 			return;
@@ -75,13 +74,18 @@ class DomainListener extends Core{
 
 		$site = $response->result->set;
 
-
         $this->kernel->getContainer()->get('session')->set('_currentSiteId', $site->getId());
         return;
     }
 }
 /**
  * Change Log
+ * ****************************************
+ * v1.0.5						 14.07.2015
+ * Can Berkol
+ * ****************************************
+ * FR :: 3806788 :: The listener can now get the site by alias domains.
+ *
  * ****************************************
  * v1.0.4						 18.06.2015
  * Can Berkol

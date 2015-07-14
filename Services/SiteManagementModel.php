@@ -10,8 +10,8 @@
  *
  * @copyright   Biber Ltd. (www.biberltd.com)
  *
- * @version     1.1.1
- * @date        30.06.2015
+ * @version     1.1.2
+ * @date        14.07.2015
  */
 
 namespace BiberLtd\Bundle\SiteManagementBundle\Services;
@@ -35,7 +35,7 @@ class SiteManagementModel extends CoreModel{
      * @author          Can Berkol
      *
      * @since           1.0.0
-     * @version         1.0.8
+     * @version         1.1.2
      *
      * @param           object          $kernel
      * @param           string          $dbConnection  Database connection key as set in app/config.yml
@@ -48,6 +48,7 @@ class SiteManagementModel extends CoreModel{
          * Register entity names for easy reference.
          */
         $this->entity = array(
+            'da'   => array('name' => 'SiteManagementBundle:DomainAliases', 'alias' => 'da'),
             's'    => array('name' => 'SiteManagementBundle:Site', 'alias' => 's'),
         );
     }
@@ -76,7 +77,7 @@ class SiteManagementModel extends CoreModel{
 	 *
 	 * @param           mixed           $site
 	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteSite($site){
 		return $this->deleteSites(array($site));
@@ -93,7 +94,7 @@ class SiteManagementModel extends CoreModel{
      *
      * @param           array           $collection
 	 *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
 	public function deleteSites($collection) {
 		$timeStamp = time();
@@ -134,7 +135,7 @@ class SiteManagementModel extends CoreModel{
 	 * @param           mixed           $site           Site entity or site id.
 	 * @param           bool            $bypass         If set to true does not return response but only the result.
 	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function doesSiteExist($site, $bypass = false) {
 		$timeStamp = time();
@@ -169,7 +170,7 @@ class SiteManagementModel extends CoreModel{
 	 * @param           mixed           $site
 	 * @param           bool            $bypass
 	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
     public function getDefaultLanguageOfSite($site, $bypass = false){
         $timeStamp = time();
@@ -197,14 +198,14 @@ class SiteManagementModel extends CoreModel{
 	 * @name 			getSite()
 	 *
 	 * @since			1.0.0
-	 * @version         1.0.8
+	 * @version         1.1.2
 	 * @author          Can Berkol
 	 *
 	 * @use				$this->createException();
 	 *
 	 * @param           mixed           $site           Site entity or site id.
 	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getSite($site) {
 		$timeStamp = time();
@@ -219,7 +220,10 @@ class SiteManagementModel extends CoreModel{
 			case is_string($site):
 				$result = $this->em->getRepository($this->entity['s']['name'])->findOneBy(array('url_key' => $site));
 				if(is_null($result)){
-					$result = $this->em->getRepository($this->entity['s']['name'])->findOneBy(array('domain' => $site));
+					$response = $this->getSiteByDomain($site);
+					if(!$response->error->exist){
+						$result = $response->result->set;
+					}
 				}
 				break;
 		}
@@ -233,14 +237,14 @@ class SiteManagementModel extends CoreModel{
 	 * @name 			getSiteByDomain()
 	 *
 	 * @since			1.0.7
-	 * @version         1.0.8
+	 * @version         1.1.2
 	 * @author          Can Berkol
 	 *
 	 * @use				$this->createException()
 	 *
 	 * @param           string			$domain
 	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getSiteByDomain($domain){
 		$timeStamp = time();
@@ -248,11 +252,42 @@ class SiteManagementModel extends CoreModel{
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be string.', 'E:S:004');
 		}
 		$result = $this->em->getRepository($this->entity['s']['name'])->findOneBy(array('domain' => $domain));
-
+		if(is_null($result)){
+			$response = $this->getSiteOfDomainAlias($domain);
+			if(!$response->error->exist){
+				$result = $response->result->set;
+			}
+		}
 		if(is_null($result)){
 			return new ModelResponse($result, 1, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
 		}
 		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+	}
+	/**
+	 * @name 			getSiteOfDomainAlias()
+	 *
+	 * @since			1.1.2
+	 * @version         1.1.2
+	 * @author          Can Berkol
+	 *
+	 * @use				$this->createException()
+	 *
+	 * @param           string			$alias
+	 *
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function getSiteOfDomainAlias($alias){
+		$timeStamp = time();
+		if (!is_string($alias)) {
+			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be string.', 'E:S:004');
+		}
+		$result = $this->em->getRepository($this->entity['da']['name'])->findOneBy(array('domain' => $alias));
+
+		if(is_null($result) || $result->getSite() == null){
+			return new ModelResponse($result, 1, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, time());
+		}
+		$site = $result->getSite();
+		return new ModelResponse($site, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
 	/**
 	 * @name 			getSiteSettings()
@@ -266,7 +301,7 @@ class SiteManagementModel extends CoreModel{
 	 * @param           mixed           $site
 	 * @param           bool            $bypass
 	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getSiteSettings($site, $bypass = false){
 		$timeStamp = time();
@@ -287,6 +322,79 @@ class SiteManagementModel extends CoreModel{
 		return new ModelResponse($settings, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 
 	}
+	/**
+	 * @name 			listDomainAliasesOfSite()
+	 *
+	 * @since			1.1.2
+	 * @version         1.1.2
+	 * @author          Can Berkol
+	 *
+	 * @param           mixed			$site
+	 * @param           array           $filter
+	 * @param           array           $sortOrder
+	 * @param           array           $limit
+	 *
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listDomainAliasesOfSite($site, $filter = null, $sortOrder = null, $limit = null) {
+		$timeStamp = time();
+		$response = $this->getSite($site);
+		if($response->error->exist){
+			return $response;
+		}
+		$site = $response->result->set;
+		if (!is_array($sortOrder) && !is_null($sortOrder)) {
+			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+		}
+		$oStr = $wStr = $gStr = $fStr = '';
+
+		$qStr = 'SELECT '.$this->entity['da']['alias']
+			.' FROM '.$this->entity['da']['name'].' '.$this->entity['da']['alias'];
+
+		if (!is_null($sortOrder)) {
+			foreach ($sortOrder as $column => $direction) {
+				switch ($column) {
+					case 'domain':
+						$column = $this->entity['da']['alias'].'.'.$column;
+						break;
+					default:
+						break;
+				}
+				$oStr .= ' '.$column.' '.strtoupper($direction).', ';
+			}
+			$oStr = rtrim($oStr, ', ');
+			$oStr = ' ORDER BY '.$oStr.' ';
+		}
+
+		$filter[] = array(
+			'glue' => 'and',
+			'condition' => array(
+
+				array(
+					'glue' => 'and',
+					'condition' => array('column' => $this->entity['da']['alias'].'.site', 'comparison' => '=', 'value' => $site->getId()),
+				),
+			)
+		);
+
+		if (!is_null($filter)) {
+			$fStr = $this->prepareWhere($filter);
+			$wStr .= ' WHERE '.$fStr;
+		}
+
+		$qStr .= $wStr.$gStr.$oStr;
+
+		$query = $this->em->createQuery($qStr);
+		$query = $this->addLimit($query, $limit);
+
+		$result = $query->getResult();
+
+		$totalRows = count($result);
+		if ($totalRows < 1) {
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, time());
+		}
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
+	}
     /**
      * @name 			listSites()
      *  				List registered sites from database based on a variety of conditions.
@@ -299,7 +407,7 @@ class SiteManagementModel extends CoreModel{
      * @param           array           $sortOrder
      * @param           array           $limit
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
 	public function listSites($filter = null, $sortOrder = null, $limit = null) {
 		$timeStamp = time();
@@ -360,7 +468,7 @@ class SiteManagementModel extends CoreModel{
 	 * @use             $this->insertSites()
 	 *
 	 * @param           mixed           $site
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertSite($site){
 		return $this->insertSites(array($site));
@@ -376,7 +484,7 @@ class SiteManagementModel extends CoreModel{
      *
      * @param           array           $collection      Collection of Site entities or array of site detais array.
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
 	public function insertSites($collection) {
 		$timeStamp = time();
@@ -433,7 +541,7 @@ class SiteManagementModel extends CoreModel{
 	 *
 	 * @param           array           $site      Site Entity or a collection of post input that stores site details.
 	 *
-	 * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateSite($site){
 		return $this->updateSites(array($site));
@@ -449,7 +557,7 @@ class SiteManagementModel extends CoreModel{
      *
      * @param           array           $collection
      *
-     * @return          BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
      */
     public function updateSites($collection){
         $timeStamp = time();
@@ -522,10 +630,18 @@ class SiteManagementModel extends CoreModel{
 /**
  * Change Log
  * **************************************
+ * v1.1.1                     14.07.2015
+ * Can Berkol
+ * **************************************
+ * FR :: 3806788 :: getSiteOfDomainAlias() added.
+ * FR :: 3806788 :: listDomainAliasesOfSite() added.
+ *
+ * **************************************
  * v1.1.1                     30.06.2015
  * Said İmamoğlu
  * **************************************
  * BF :: getDefaultLanguageOfSite() was returning only int. It replaced with language entity.
+ *
  * **************************************
  * v1.1.0                      24.06.2015
  * Can Berkol
