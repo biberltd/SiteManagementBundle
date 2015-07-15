@@ -5,8 +5,8 @@
  *
  * @author      Can Berkol
  *
- * @version     1.0.0
- * @date        14.07.2015
+ * @version     1.0.1
+ * @date        16.07.2015
  *
  * @copyright   Biber Ltd. (http://www.biberltd.com)
  * @license     GPL v3.0
@@ -30,11 +30,13 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
 class DomainAliases extends CoreEntity
 {
     /**
+	 * @ORM\Id
      * @ORM\Column(type="text", unique=true, nullable=true, options={"default":"Alias - domain. i.e. biberltd.com"})
      */
     private $domain;
 
     /**
+	 * @ORM\Id
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site", inversedBy="domains")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -112,6 +114,12 @@ class DomainAliases extends CoreEntity
 }
 /**
  * Change Log:
+ * **************************************
+ * v1.0.1                      16.07.2015
+ * Can Berkol
+ * **************************************
+ * BF :: Missing primary key definitions added.
+ *
  * **************************************
  * v1.0.0                      14.07.2015
  * Can Berkol
