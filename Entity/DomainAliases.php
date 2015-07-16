@@ -22,8 +22,7 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *     name="domain_aliases",
- *     schema="innodb",
+ *     name="domain_aliases"
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"}
  * )
  */
@@ -119,6 +118,7 @@ class DomainAliases extends CoreEntity
  * Can Berkol
  * **************************************
  * BF :: Missing primary key definitions added.
+ * BF :: schema definition is removed.
  *
  * **************************************
  * v1.0.0                      14.07.2015
