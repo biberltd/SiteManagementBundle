@@ -10,8 +10,8 @@
  *
  * @copyright   Biber Ltd. (www.biberltd.com)
  *
- * @version     1.1.2
- * @date        14.07.2015
+ * @version     1.1.3
+ * @date        22.07.2015
  */
 
 namespace BiberLtd\Bundle\SiteManagementBundle\Services;
@@ -162,7 +162,9 @@ class SiteManagementModel extends CoreModel{
 	 * @name 			getDefaultLanguageOfSite()
 	 *
 	 * @since			1.0.6
-	 * @version         1.1.1
+	 * @version         1.1.3
+	 *
+	 * @author          Can Berkol
 	 * @author          Said İmamoğlu
 	 *
 	 * @use             $this->getSite()
@@ -178,7 +180,7 @@ class SiteManagementModel extends CoreModel{
         if($response->error->exist){
             return $response;
         }
-        $language = $response->result->set->getLanguage();
+        $language = $response->result->set->getDefaultLanguage();
         if(is_null($language)){
             return new ModelResponse(null, 1, 0, null, error, 'E:S:005', 'Default language is not set.', $timeStamp, time());
         }
@@ -190,7 +192,7 @@ class SiteManagementModel extends CoreModel{
         }
         $language = $lResponse->result->set;
         if($bypass){
-            $language;
+            return $language;
         }
         return new ModelResponse($language, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
@@ -630,7 +632,13 @@ class SiteManagementModel extends CoreModel{
 /**
  * Change Log
  * **************************************
- * v1.1.1                     14.07.2015
+ * v1.1.3                     22.07.2015
+ * Can Berkol
+ * **************************************
+ * BF :: getDefaultLanguageOfSite() invalid method call fixed.
+ *
+ * **************************************
+ * v1.1.2                     14.07.2015
  * Can Berkol
  * **************************************
  * FR :: 3806788 :: getSiteOfDomainAlias() added.
