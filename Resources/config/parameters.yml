@@ -1,11 +1,14 @@
 parameters:
-  # SiteManagementBundle actions
+  # TvManagementBundle actions
   # actionname: id
-  # Make sure that keys are unique.
+  # 14xx
   actions:
-      site_added:                       7
-      site_removed:                     8
-      site_modified:                    9
-      list_sites:                       10
-      site_default_language_changed:    11
-      site_name_changed:                12
+      site.create:                    1400
+      site.create.domain.alias:       1406
+      site.list:                      1403
+      site.list.domain.alias:         1408
+      site.remove:                    1401
+      site.remove.domain.alias:       1407
+      site.update:                    1402
+      site.update.default.language:   1404
+      site.update.name:               1405

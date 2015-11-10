@@ -632,20 +632,20 @@ class SiteManagementModel extends CoreModel{
 /**
  * Change Log
  * **************************************
- * v1.1.3                     22.07.2015
+ * v1.1.3                      22.07.2015
  * Can Berkol
  * **************************************
  * BF :: getDefaultLanguageOfSite() invalid method call fixed.
  *
  * **************************************
- * v1.1.2                     14.07.2015
+ * v1.1.2                      14.07.2015
  * Can Berkol
  * **************************************
  * FR :: 3806788 :: getSiteOfDomainAlias() added.
  * FR :: 3806788 :: listDomainAliasesOfSite() added.
  *
  * **************************************
- * v1.1.1                     30.06.2015
+ * v1.1.1                      30.06.2015
  * Said İmamoğlu
  * **************************************
  * BF :: getDefaultLanguageOfSite() was returning only int. It replaced with language entity.
