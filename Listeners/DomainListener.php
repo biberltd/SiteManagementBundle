@@ -64,7 +64,10 @@ class DomainListener extends Core{
         $request = $e->getRequest();
 
         $currentDomain = $request->getHttpHost();
-
+        if (false !== strpos($currentDomain,':')) {
+            $currentDomain = explode(':',$currentDomain);
+            $currentDomain = $currentDomain[0];
+        }
         $response = $this->siteManagement->getSiteByDomain(str_replace('www.', '', $currentDomain));
 
 		if($response->error->exist){
