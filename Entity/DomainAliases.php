@@ -23,19 +23,20 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  * @ORM\Entity
  * @ORM\Table(
  *     name="domain_aliases",
+ *     schema="innodb",
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"}
  * )
  */
 class DomainAliases extends CoreEntity
 {
     /**
-	 * @ORM\Id
+	 * 
      * @ORM\Column(type="text", unique=true, nullable=true, options={"default":"Alias - domain. i.e. biberltd.com"})
      */
     private $domain;
 
     /**
-	 * @ORM\Id
+	 * 
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site", inversedBy="domains")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
      */
