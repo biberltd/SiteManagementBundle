@@ -1,6 +1,0 @@
-biberltd_core_site_management_install_site:
-    pattern:  install/site
-    defaults: { _controller: BiberLtdCoreBundlesSiteManagementBundle:Install:site, _locale: en}
-#biberltd_core_site_management_edit:
-#    pattern:  /manage/site/edit/{url_key}
-#    defaults: { _controller: BiberLtdCoreBundlesSiteManagementBundle:Manage:edit}

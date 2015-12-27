@@ -1,19 +1,13 @@
 <?php
 /**
- * @vendor      BiberLtd
- * @package		Core\Bundles\SiteManagementBundle
- * @subpackage	Services
- * @name	    SiteManagementModel
- *
  * @author		Can Berkol
- * @author		Said İmamoğlu
+ * @author		Sid İmamoğlu
  *
- * @copyright   Biber Ltd. (www.biberltd.com)
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @version     1.1.3
- * @date        22.07.2015
+ * @date        27.12.2015
  */
-
 namespace BiberLtd\Bundle\SiteManagementBundle\Services;
 
 /** Extends CoreModel */
@@ -22,26 +16,21 @@ use BiberLtd\Bundle\CoreBundle\CoreModel;
 /** Required for better & instant error handling for the support team */
 use BiberLtd\Bundle\CoreBundle\Exceptions as CoreExceptions;
 use BiberLtd\Bundle\CoreBundle\Responses\ModelResponse;
+use BiberLtd\Bundle\MultiLanguageSupportBundle\Services\MultiLanguageSupportModel;
 use BiberLtd\Bundle\SiteManagementBundle\Exceptions as BundleExceptions;
 
 /** Entities to be used */
 use BiberLtd\Bundle\SiteManagementBundle\Entity as BundleEntity;
 
 class SiteManagementModel extends CoreModel{
-    /**
-     * @name            __construct()
-     *                  Constructor.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.1.2
-     *
-     * @param           object          $kernel
-     * @param           string          $dbConnection  Database connection key as set in app/config.yml
-     * @param           string          $orm            ORM that is used.
-     */
-    public function __construct($kernel, $dbConnection = 'default', $orm = 'doctrine'){
+	/**
+	 * SiteManagementModel constructor.
+	 *
+	 * @param object $kernel
+	 * @param string $dbConnection
+	 * @param string $orm
+	 */
+    public function __construct($kernel, \string $dbConnection = 'default', \string $orm = 'doctrine'){
         parent::__construct($kernel, $dbConnection, $orm);
 
         /**
@@ -52,51 +41,31 @@ class SiteManagementModel extends CoreModel{
             's'    => array('name' => 'SiteManagementBundle:Site', 'alias' => 's'),
         );
     }
-    /**
-     * @name            __destruct()
-	 *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     */
+
+	/**
+	 * Destructor
+	 */
     public function __destruct(){
         foreach($this as $property => $value) {
             $this->$property = null;
         }
     }
+
 	/**
-	 * @name 			deleteSite()
+	 * @param mixed $site
 	 *
-	 * @since			1.0.0
-	 * @version         1.0.8
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->deleteSites()
-	 *
-	 * @param           mixed           $site
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteSite($site){
 		return $this->deleteSites(array($site));
 	}
-    /**
-     * @name 			deleteSites()
-     *
-     * @since			1.0.0
-     * @version         1.0.8
+
+	/**
+	 * @param array $collection
 	 *
-     * @author          Can Berkol
-     *
-     * @use             $this->createException()
-     *
-     * @param           array           $collection
-	 *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-     */
-	public function deleteSites($collection) {
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function deleteSites(array $collection) {
 		$timeStamp = time();
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
@@ -123,21 +92,14 @@ class SiteManagementModel extends CoreModel{
 
 		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, time());
 	}
+
 	/**
-	 * @name 			doesSiteExist()
+	 * @param mixed $site
+	 * @param bool $bypass
 	 *
-	 * @since			1.0.0
-	 * @version         1.0.8
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getSite()
-	 *
-	 * @param           mixed           $site           Site entity or site id.
-	 * @param           bool            $bypass         If set to true does not return response but only the result.
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesSiteExist($site, $bypass = false) {
+	public function doesSiteExist($site, \bool $bypass = false) {
 		$timeStamp = time();
 		$exist = false;
 
@@ -158,23 +120,14 @@ class SiteManagementModel extends CoreModel{
 		}
 		return new ModelResponse(true, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
+
 	/**
-	 * @name 			getDefaultLanguageOfSite()
+	 * @param mixed $site
+	 * @param bool $bypass
 	 *
-	 * @since			1.0.6
-	 * @version         1.1.3
-	 *
-	 * @author          Can Berkol
-	 * @author          Said İmamoğlu
-	 *
-	 * @use             $this->getSite()
-	 *
-	 * @param           mixed           $site
-	 * @param           bool            $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-    public function getDefaultLanguageOfSite($site, $bypass = false){
+    public function getDefaultLanguageOfSite($site, \bool $bypass = false){
         $timeStamp = time();
         $response = $this->getSite($site);
         if($response->error->exist){
@@ -184,7 +137,9 @@ class SiteManagementModel extends CoreModel{
         if(is_null($language)){
             return new ModelResponse(null, 1, 0, null, error, 'E:S:005', 'Default language is not set.', $timeStamp, time());
         }
-
+	    /**
+	     * @var \BiberLtd\Bundle\MultiLanguageSupportBundle\Services\MultiLanguageSupportModel @lModel
+	     */
         $lModel= $this->kernel->getContainer()->get('multilanguagesupport.model');
         $lResponse = $lModel->getLanguage($language);
         if ($lResponse->error->exist) {
@@ -196,18 +151,11 @@ class SiteManagementModel extends CoreModel{
         }
         return new ModelResponse($language, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
     }
+
 	/**
-	 * @name 			getSite()
+	 * @param mixed $site
 	 *
-	 * @since			1.0.0
-	 * @version         1.1.2
-	 * @author          Can Berkol
-	 *
-	 * @use				$this->createException();
-	 *
-	 * @param           mixed           $site           Site entity or site id.
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getSite($site) {
 		$timeStamp = time();
@@ -235,20 +183,13 @@ class SiteManagementModel extends CoreModel{
 
 		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
+
 	/**
-	 * @name 			getSiteByDomain()
+	 * @param string $domain
 	 *
-	 * @since			1.0.7
-	 * @version         1.1.2
-	 * @author          Can Berkol
-	 *
-	 * @use				$this->createException()
-	 *
-	 * @param           string			$domain
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getSiteByDomain($domain){
+	public function getSiteByDomain(\string $domain){
 		$timeStamp = time();
 		if (!is_string($domain)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be string.', 'E:S:004');
@@ -265,20 +206,13 @@ class SiteManagementModel extends CoreModel{
 		}
 		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
+
 	/**
-	 * @name 			getSiteOfDomainAlias()
+	 * @param string $alias
 	 *
-	 * @since			1.1.2
-	 * @version         1.1.2
-	 * @author          Can Berkol
-	 *
-	 * @use				$this->createException()
-	 *
-	 * @param           string			$alias
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getSiteOfDomainAlias($alias){
+	public function getSiteOfDomainAlias(\string $alias){
 		$timeStamp = time();
 		if (!is_string($alias)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be string.', 'E:S:004');
@@ -291,21 +225,14 @@ class SiteManagementModel extends CoreModel{
 		$site = $result->getSite();
 		return new ModelResponse($site, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
+
 	/**
-	 * @name 			getSiteSettings()
+	 * @param      $site
+	 * @param bool $bypass
 	 *
-	 * @since			1.0.0
-	 * @version         1.0.8
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->getSite()
-	 *
-	 * @param           mixed           $site
-	 * @param           bool            $bypass
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getSiteSettings($site, $bypass = false){
+	public function getSiteSettings($site, \bool $bypass = false){
 		$timeStamp = time();
 		$response = $this->getSite($site);
 
@@ -324,21 +251,16 @@ class SiteManagementModel extends CoreModel{
 		return new ModelResponse($settings, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 
 	}
+
 	/**
-	 * @name 			listDomainAliasesOfSite()
+	 * @param            $site
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
 	 *
-	 * @since			1.1.2
-	 * @version         1.1.2
-	 * @author          Can Berkol
-	 *
-	 * @param           mixed			$site
-	 * @param           array           $filter
-	 * @param           array           $sortOrder
-	 * @param           array           $limit
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function listDomainAliasesOfSite($site, $filter = null, $sortOrder = null, $limit = null) {
+	public function listDomainAliasesOfSite($site, array $filter = null, array $sortOrder = null, array $limit = null) {
 		$timeStamp = time();
 		$response = $this->getSite($site);
 		if($response->error->exist){
@@ -397,21 +319,15 @@ class SiteManagementModel extends CoreModel{
 		}
 		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
-    /**
-     * @name 			listSites()
-     *  				List registered sites from database based on a variety of conditions.
-     *
-     * @since			1.0.0
-     * @version         1.0.8
-     * @author          Can Berkol
-     *
-     * @param           array           $filter
-     * @param           array           $sortOrder
-     * @param           array           $limit
-     *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-     */
-	public function listSites($filter = null, $sortOrder = null, $limit = null) {
+
+	/**
+	 * @param array|null $filter
+	 * @param array|null $sortOrder
+	 * @param array|null $limit
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function listSites(array $filter = null, array $sortOrder = null, array $limit = null) {
 		$timeStamp = time();
 		if (!is_array($sortOrder) && !is_null($sortOrder)) {
 			return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
@@ -460,35 +376,22 @@ class SiteManagementModel extends CoreModel{
 		}
 		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, time());
 	}
+
 	/**
-	 * @name 			insertSite()
+	 * @param mixed $site
 	 *
-	 * @since			1.0.0
-	 * @version         1.0.8
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->insertSites()
-	 *
-	 * @param           mixed           $site
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertSite($site){
 		return $this->insertSites(array($site));
 	}
-    /**
-     * @name 			insertSites()
-     *
-     * @since			1.0.0
-     * @version         1.0.8
-     * @author          Can Berkol
-     *
-     * @use             $this->createException()
-     *
-     * @param           array           $collection      Collection of Site entities or array of site detais array.
-     *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-     */
-	public function insertSites($collection) {
+
+	/**
+	 * @param array $collection
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+	public function insertSites(array $collection) {
 		$timeStamp = time();
 		if (!is_array($collection)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be an array collection', 'E:S:001');
@@ -531,37 +434,22 @@ class SiteManagementModel extends CoreModel{
 		}
 		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, time());
 	}
+
 	/**
-	 * @name 			updateSite()
-	 *  				Update one or more sites into database.
+	 * @param $site
 	 *
-	 * @since			1.0.0
-	 * @version         1.0.3
-	 * @author          Can Berkol
-	 *
-	 * @use             $this->updateSites()
-	 *
-	 * @param           array           $site      Site Entity or a collection of post input that stores site details.
-	 *
-	 * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function updateSite($site){
 		return $this->updateSites(array($site));
 	}
-    /**
-     * @name 			updateSites()
-     *
-     * @since			1.0.0
-     * @version         1.0.8
-     * @author          Can Berkol
-     *
-     * @ue              $this->createException()
-     *
-     * @param           array           $collection
-     *
-     * @return          \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
-     */
-    public function updateSites($collection){
+
+	/**
+	 * @param array $collection
+	 *
+	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+	 */
+    public function updateSites(array $collection){
         $timeStamp = time();
         /** Parameter must be an array */
         if (!is_array($collection)) {
@@ -629,108 +517,3 @@ class SiteManagementModel extends CoreModel{
 		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, time());
     }
 }
-/**
- * Change Log
- * **************************************
- * v1.1.3                      22.07.2015
- * Can Berkol
- * **************************************
- * BF :: getDefaultLanguageOfSite() invalid method call fixed.
- *
- * **************************************
- * v1.1.2                      14.07.2015
- * Can Berkol
- * **************************************
- * FR :: 3806788 :: getSiteOfDomainAlias() added.
- * FR :: 3806788 :: listDomainAliasesOfSite() added.
- *
- * **************************************
- * v1.1.1                      30.06.2015
- * Said İmamoğlu
- * **************************************
- * BF :: getDefaultLanguageOfSite() was returning only int. It replaced with language entity.
- *
- * **************************************
- * v1.1.0                      24.06.2015
- * Can Berkol
- * **************************************
- * BF :: listSites() has an invalid alias "l". It is replaced with "s".
- *
- * **************************************
- * v1.0.9                      25.05.2015
- * Can Berkol
- * **************************************
- * BF :: db_connection is replaced with dbConnection
- * BF :: Use statement for ModelResponse has been added to header.
- *
- * **************************************
- * v1.0.8                      01.05.2015
- * Can Berkol
- * **************************************
- * CR :: Made compatible with BiberLtd\Bundle\CoreBundle v3.3.
- *
- * **************************************
- * v1.0.7                      28.04.2015
- * TW #
- * Can Berkol
- * **************************************
- * A getSiteByDomain()
- * U getSite()
- *
- * **************************************
- * v1.0.6                   Said İmamoğlu
- * 21.02.2014
- * **************************************
- * A getDefaultLanguage()
- * 
- * **************************************
- * v1.0.5                      Can Berkol
- * 20.02.2014
- * **************************************
- * U insertSites()
- * U updateSites()
- *
- * **************************************
- * v1.0.4                      Can Berkol
- * 25.01.2014
- * **************************************
- * B updateSite()
- * U updateSites()
- *
- * **************************************
- * v1.0.3                      Can Berkol
- * 07.11.2013
- * **************************************
- * M The class now extends CoreModel
- * M Methods now use $this->createException() method.
- * M Method names are now camelCase.
- *
- * **************************************
- * v1.0.2                      Can Berkol
- * 16.08.2013
- * **************************************
- * B list_sites() NULL filter query problem fixed.
- *
- * **************************************
- * v1.0.1                      Can Berkol
- * 05.08.2013
- * **************************************
- * B delete_sites() Query parameter was not being set.
- *
- * **************************************
- * v1.0.0                      Can Berkol
- * 03.08.2013
- * **************************************
- * A __construct()
- * A __destruct()
- * A delete_site()
- * A delete_sites()
- * A does_site_exist()
- * A getSite()
- * A getSite_settings()
- * A insert_site()
- * A insert_sites()
- * A list_sites()
- * A update_site()
- * A update_sites()
- */

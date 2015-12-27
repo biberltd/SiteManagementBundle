@@ -1,19 +1,24 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : localhost
-Source Server Version : 50505
-Source Host           : localhost:3306
-Source Database       : bod_core
-
-Target Server Type    : MYSQL
-Target Server Version : 50505
-File Encoding         : 65001
-
-Date: 2015-04-30 21:48:08
-*/
-
+/**
+ * @author		Can Berkol
+ *
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
+ *
+ * @date        27.12.2015
+ */
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for domain_aliases
+-- ----------------------------
+DROP TABLE IF EXISTS `domain_aliases`;
+CREATE TABLE `domain_aliases` (
+  `domain` varchar(255) COLLATE utf8_turkish_ci NOT NULL COMMENT 'Alias of the primary domain.',
+  `site` int(10) unsigned NOT NULL COMMENT 'Site that alias belongs to.',
+  PRIMARY KEY (`site`,`domain`),
+  UNIQUE KEY `idxUSiteDomain` (`domain`,`site`),
+  CONSTRAINT `idxFSiteOfDomain` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 -- ----------------------------
 -- Table structure for site
@@ -38,4 +43,4 @@ CREATE TABLE `site` (
   KEY `idxFDefaultLanguageOfSite` (`default_language`) USING BTREE,
   KEY `idxNSiteDateRemoved` (`date_removed`),
   CONSTRAINT `idxFDefaultLanguageOfSite` FOREIGN KEY (`default_language`) REFERENCES `language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci ROW_FORMAT=COMPACT;

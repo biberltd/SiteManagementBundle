@@ -1,17 +1,12 @@
 <?php
 /**
- * @vendor      BiberLtd
- * @package		SiteManagementBundle
- * @subpackage	Services
- * @name	    MaintenanceListener
- *
  * @author		Can Berkol
  *
- * @version     1.0.1
- * @date        22.06.2015
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
+ * @date        27.12.2015
  */
-
 namespace BiberLtd\Bundle\SiteManagementBundle\Listeners;
 
 use BiberLtd\Bundle\CoreBundle\Core as Core;
@@ -22,28 +17,18 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class MaintenanceListener extends Core{
     /**
-     * @name            __construct()
+     * MaintenanceListener constructor.
      *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @param           BundleServices\SiteManagementModel      $siteManagement
-     * @param           object       $kernel
+     * @param \BiberLtd\Bundle\SiteManagementBundle\Services\SiteManagementModel $siteManagement
+     * @param                                                                    $kernel
      */
     public function __construct(BundleServices\SiteManagementModel $siteManagement, $kernel){
         parent::__construct($kernel);
         $this->siteManagement = $siteManagement;
         $this->kernel = $kernel;
     }
+
     /**
-     * @name            __destruct()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
      *
      */
     public function __destruct(){
@@ -51,16 +36,9 @@ class MaintenanceListener extends Core{
             $this->$property = null;
         }
     }
+
     /**
-     * @name 			onKernelRequest()
-     *
-     * @author          Can Berkol
-     *
-     * @since			1.0.0
-     * @version         1.0.0
-     *
-     * @param 			GetResponseEvent 	        $e
-     *
+     * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $e
      */
     public function onKernelRequest(GetResponseEvent $e){
         $request = $e->getRequest();
@@ -89,17 +67,3 @@ class MaintenanceListener extends Core{
         }
     }
 }
-/**
- * Change Log
- * ****************************************
- * v1.0.1						 22.06.2015
- * Can Berkol
- * ****************************************
- * FR :: Maintenance mode now allows logged-in access.
- *
- * ****************************************
- * v1.0.0						 21.06.2015
- * Can Berkol
- * ****************************************
- * File is created.
- */

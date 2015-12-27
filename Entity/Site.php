@@ -1,18 +1,11 @@
 <?php
 /**
- * @name        Site
- * @package     BiberLtd\Bundle\CoreBundle\SiteManagementBundle\Entity
+ * @author		Can Berkol
  *
- * @author      Can Berkol
- *              Murat Ünal
- * @version     1.0.7
- * @date        14.07.2015
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        27.12.2015
  */
 namespace BiberLtd\Bundle\SiteManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
@@ -38,87 +31,83 @@ class Site extends CoreEntity{
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=155, nullable=false)
+     * @var string
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", unique=true, length=255, nullable=false)
+     * @var string
      */
     private $url_key;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $description;
 
     /**
      * @ORM\Column(type="smallint", length=5, nullable=true)
+     * @var int
      */
     private $default_language;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @var string
      */
     private $settings;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_added;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @var \DateTime
      */
     public $date_updated;
 
 	/**
 	 * @ORM\Column(type="datetime", nullable=true)
+	 * @var \DateTime
 	 */
 	public $date_removed;
 
 	/**
 	 * @ORM\Column(type="text", nullable=true)
+	 * @var string
 	 */
 	private $domain;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\DomainAliases", mappedBy="site")
+	 * @var array
 	 */
 	private $domains;
 
-    /**
-     * @name            getId()
-     * .
-     * @author          Murat Ünal
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          string          $this->id
-     */
+	/**
+	 * @return mixed
+	 */
     public function getId(){
         return $this->id;
     }
 
-    /**
-     * @name            setDescription ()
+	/**
+	 * @param string $description
 	 *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $description
-     *
-     * @return          object                $this
-     */
-    public function setDescription($description) {
+	 * @return $this
+	 */
+    public function setDescription(\string $description) {
         if(!$this->setModified('description', $description)->isModified()) {
             return $this;
         }
@@ -126,35 +115,19 @@ class Site extends CoreEntity{
 		return $this;
     }
 
-    /**
-     * @name            getDescription ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->description
-     */
+	/**
+	 * @return string
+	 */
     public function getDescription() {
         return $this->description;
     }
 
-    /**
-     * @name            setLanguage ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-	 * @version         1.0.6
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $language
-     *
-     * @return          object                $this
-     */
-    public function setDefaultLanguage($language) {
+	/**
+	 * @param int $language
+	 *
+	 * @return $this
+	 */
+    public function setDefaultLanguage(\integer $language) {
         if(!$this->setModified('default_language', $language)->isModified()) {
             return $this;
         }
@@ -162,35 +135,19 @@ class Site extends CoreEntity{
 		return $this;
     }
 
-    /**
-     * @name            getDefaultLanguage ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.6
-     *
-     * @return          mixed           $this->language
-     */
+	/**
+	 * @return int
+	 */
     public function getDefaultLanguage() {
         return $this->default_language;
     }
 
-    /**
-     * @name            setSettings ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $settings
-     *
-     * @return          object                $this
-     */
-    public function setSettings($settings) {
+	/**
+	 * @param string $settings
+	 *
+	 * @return $this
+	 */
+    public function setSettings(\string $settings) {
         if(!$this->setModified('settings', $settings)->isModified()) {
             return $this;
         }
@@ -198,35 +155,19 @@ class Site extends CoreEntity{
 		return $this;
     }
 
-    /**
-     * @name            getSettings ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->settings
-     */
+	/**
+	 * @return string
+	 */
     public function getSettings() {
         return $this->settings;
     }
 
-    /**
-     * @name            setTitle ()
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $title
-     *
-     * @return          object                $this
-     */
-    public function setTitle($title) {
+	/**
+	 * @param string $title
+	 *
+	 * @return $this
+	 */
+    public function setTitle(\string $title) {
         if(!$this->setModified('title', $title)->isModified()) {
             return $this;
         }
@@ -234,35 +175,19 @@ class Site extends CoreEntity{
 		return $this;
     }
 
-    /**
-     * @name            getTitle ()
-	 *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->title
-     */
+	/**
+	 * @return string
+	 */
     public function getTitle() {
         return $this->title;
     }
 
-    /**
-     * @name            setUrlKey ()
+	/**
+	 * @param string $url_key
 	 *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @use             $this->setModified()
-     *
-     * @param           mixed $url_key
-     *
-     * @return          object                $this
-     */
-    public function setUrlKey($url_key) {
+	 * @return $this
+	 */
+    public function setUrlKey(\string $url_key) {
         if(!$this->setModified('url_key', $url_key)->isModified()) {
             return $this;
         }
@@ -270,47 +195,26 @@ class Site extends CoreEntity{
 		return $this;
     }
 
-    /**
-     * @name            getUrlKey ()
-     *                  Returns the value of url_key property.
-     *
-     * @author          Can Berkol
-     *
-     * @since           1.0.0
-     * @version         1.0.0
-     *
-     * @return          mixed           $this->url_key
-     */
+	/**
+	 * @return string
+	 */
     public function getUrlKey() {
         return $this->url_key;
     }
+
 	/**
-	 * @name        getDomain ()
-	 *
-	 * @author      Can Berkol
-	 *
-	 * @since       1.0.5
-	 * @version     1.0.5
-	 *
-	 * @return      mixed
+	 * @return string
 	 */
 	public function getDomain() {
 		return $this->domain;
 	}
 
 	/**
-	 * @name        setDomain ()
+	 * @param string $domain
 	 *
-	 * @author      Can Berkol
-	 *
-	 * @since       1.0.5
-	 * @version     1.0.5
-	 *
-	 * @param       mixed $domain
-	 *
-	 * @return      $this
+	 * @return $this
 	 */
-	public function setDomain($domain) {
+	public function setDomain(\string $domain) {
 		if (!$this->setModified('domain', $domain)->isModified()) {
 			return $this;
 		}
@@ -320,32 +224,18 @@ class Site extends CoreEntity{
 	}
 
 	/**
-	 * @name        getDomains ()
-	 *
-	 * @author      Can Berkol
-	 *
-	 * @since       1.0.7
-	 * @version     1.0.7
-	 *
-	 * @return      mixed
+	 * @return array
 	 */
 	public function getDomains() {
 		return $this->domains;
 	}
 
 	/**
-	 * @name        setDomains ()
+	 * @param array $domains
 	 *
-	 * @author      Can Berkol
-	 *
-	 * @since       1.0.7
-	 * @version     1.0.7
-	 *
-	 * @param       mixed $domains
-	 *
-	 * @return      $this
+	 * @return $this
 	 */
-	public function setDomains($domains) {
+	public function setDomains(array $domains) {
 		if (!$this->setModified('domains', $domains)->isModified()) {
 			return $this;
 		}
@@ -355,225 +245,3 @@ class Site extends CoreEntity{
 	}
 
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.7                      14.07.2015
- * Can Berkol
- * **************************************
- * FR :: domains property added.
- *
- * **************************************
- * v1.0.6                      07.07.2015
- * Can Berkol
- * **************************************
- * BF :: setLanguage was trying to set "language" key instead of "default_language" key. Fixed.
- *
- * **************************************
- * v1.0.5                      Can Berkol
- * 27.04.2015
- * **************************************
- * A getDomain()
- * A setDomain()
- *
- * **************************************
- * v1.0.4                      Can Berkol
- * 25.01.2014
- * **************************************
- * Now extends CoreEntity
- *
- * **************************************
- * v1.0.3                      Murat Ünal
- * 11.10.2013
- * **************************************
- * A getBlogPostFields()
- * A setBlogPostFields()
- * A getImageCrop()
- * A setImageCrop()
- * A getProductAttribute()
- * A setProductAttribute()
- * * ************************************
- * v1.0.3                      Murat Ünal
- * 11.10.2013
- * **************************************
- * D getMembers_of_sites()
- * D set_members_of_sites()
- * D getMemberGroups()
- * D setMemberGroups()
- * D getMembers()
- * D set_members()
- * D getCourse()
- * D setCourse()
- * D getFaqs()
- * D setFaqs()
- * D getAddresses()
- * D setAddresses()
- * D getTaxRates()
- * D setTaxRates()
- * D getCoupons()
- * D setCoupons()
- * D getShipmentGateways()
- * D setShipmentGateways()
- * D getPaymentGateways()
- * D setPaymentGateways()
- * D get_payment_transactions()
- * D set_payment_transactions()
- * D getBlogPostComments()
- * D setBlogPostComments()
- * D getAdvertisements()
- * D setAdvertisements()
- * D getBlogPosts()
- * D setBlogPosts()
- * D getBlogPostCategories()
- * D setBlogPostCategories()
- * D getBlog()
- * D setBlog()
- * D getBlogPostTags()
- * D setBlogPostTags()
- * D get_social_networks()
- * D set_social_networks()
- * D getPolls()
- * D setPolls()
- * D get_galleries()
- * D set_galleries()
- * D getNewsletter_categories()
- * D setNewsletter_categories()
- * D getNewsletter()
- * D setNewsletter()
- * D getNewsCategory()
- * D setNewsCategory()
- * D getNews()
- * D setNews()
- * D getAward()
- * D setAward()
- * D getModule()
- * D setModule()
- * D getLayouts()
- * D setLayouts()
- * D getTheme()
- * D setTheme()
- * D getPage()
- * D setPage()
- * D getNavigation()
- * D setNavigation()
- * D get_offices()
- * D set_offices()
- * D getFile()
- * D setFile()
- * D get_file_upload_folder()
- * D set_file_upload_folder()
- * D getProductCategory()
- * D setProductCategory()
- * D getProducts_of_site()
- * D setProducts_of_site()
- * D getProduct()
- * D setProduct()
- * D get_translations()
- * D set_translations()
- * D getLanguages()
- * D setLanguages()
- * D get_log()
- * D set_log()
- * D getAction()
- * D setAction()
- * D getSession()
- * D setSession()
- * **************************************
- * v1.0.2                      Can Berkol
- * 04.08.2013
- * **************************************
- * U getSettings()
- * U setSettings()
- * M None-Core functionalities have been commented out.
- *
- * **************************************
- * v1.0.1                      Murat Ünal
- * 19.07.2013
- * **************************************
- * A getAction()
- * A setAction()
- * A getAdvertisements()
- * A setAdvertisements()
- * A getAward()
- * A setAward()
- * A getBlogPostCategories()
- * A setBlogPostCategories()
- * A getBlogPostComments()
- * A setBlogPostComments()
- * A getBlogPostFields()
- * A setBlogPostFields()
- * A getBlogPostTags()
- * A setBlogPostTags()
- * A getBlogPosts()
- * A setBlogPosts()
- * A getDateAdded()
- * A setDateAdded()
- * A getDateUpdated()
- * A setDateUpdated()
- * A getDescription()
- * A setDescription()
- * A getFile()
- * A setFile()
- * A get_file_upload_folder()
- * A set_file_upload_folder()
- * A get_galleries()
- * A set_galleries()
- * A getId()
- * A setId()
- * A getImageCrop()
- * A setImageCrop()
- * A getLanguage()
- * A setLanguage()
- * A getLanguages()
- * A setLanguages()
- * A getLayouts()
- * A setLayouts()
- * A get_log()
- * A set_log()
- * A getMemberGroups()
- * A setMemberGroups()
- * A getMembers()
- * A set_members()
- * A get_members_of_sites()
- * A set_members_of_sites()
- * A getModule()
- * A setModule()
- * A getNavigation()
- * A setNavigation()
- * A getNews()
- * A setNews()
- * A getNewsCategory()
- * A setNewsCategory()
- * A getNewsletter_categories()
- * A setNewsletter_categories()
- * A getNewsletters()
- * A setNewsletters()
- * A get_offices()
- * A set_offices()
- * A getPage()
- * A setPage()
- * A getPolls()
- * A setPolls()
- * A getProductAttribute()
- * A setProductAttribute()
- * A getProductCategory()
- * A setProductCategory()
- * A getProducts()
- * A setProducts()
- * A getProducts_of_site()
- * A setProducts_of_site()
- * A getSession()
- * A setSession()
- * A getSettings()
- * A setSettings()
- * A get_social_networks()
- * A set_social_networks()
- * A getTheme()
- * A setTheme()
- * A getTitle()
- * A setTitle()
- * A get_translation()
- * A set_translation()
- * A getUrlKey()
- * A setUrlKey()
- */

@@ -1,20 +1,12 @@
 <?php
 /**
- * @name        DomainAliases
- * @package     BiberLtd\Bundle\CoreBundle\SiteManagementBundle\Entity
+ * @author		Can Berkol
  *
- * @author      Can Berkol
+ * @copyright   Biber Ltd. (http://www.biberltd.com) (C) 2015
+ * @license     GPLv3
  *
- * @version     1.0.1
- * @date        16.07.2015
- *
- * @copyright   Biber Ltd. (http://www.biberltd.com)
- * @license     GPL v3.0
- *
- * @description Model / Entity class.
- *
+ * @date        27.12.2015
  */
-
 namespace BiberLtd\Bundle\SiteManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Bundle\CoreBundle\CoreEntity;
@@ -32,6 +24,7 @@ class DomainAliases extends CoreEntity
     /**
 	 * 
      * @ORM\Column(type="text", unique=true, nullable=true, options={"default":"Alias - domain. i.e. biberltd.com"})
+     * @var string
      */
     private $domain;
 
@@ -39,36 +32,23 @@ class DomainAliases extends CoreEntity
 	 * 
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site", inversedBy="domains")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
+     * @var \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
      */
     private $site;
 
 	/**
-	 * @name        getDomain ()
-	 *
-	 * @author      Can Berkol
-	 *
-	 * @since       1.0.0
-	 * @version     1.0.0
-	 *
-	 * @return      mixed
+	 * @return mixed
 	 */
 	public function getDomain() {
 		return $this->domain;
 	}
 
 	/**
-	 * @name        setDomain ()
+	 * @param string $domain
 	 *
-	 * @author      Can Berkol
-	 *
-	 * @since       1.0.0
-	 * @version     1.0.0
-	 *
-	 * @param       mixed $domain
-	 *
-	 * @return      $this
+	 * @return $this
 	 */
-	public function setDomain($domain) {
+	public function setDomain(\string $domain) {
 		if (!$this->setModified('domain', $domain)->isModified()) {
 			return $this;
 		}
@@ -78,32 +58,18 @@ class DomainAliases extends CoreEntity
 	}
 
 	/**
-	 * @name        getSite ()
-	 *
-	 * @author      Can Berkol
-	 *
-	 * @since       1.0.0
-	 * @version     1.0.0
-	 *
-	 * @return      mixed
+	 * @return \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
 	 */
 	public function getSite() {
 		return $this->site;
 	}
 
 	/**
-	 * @name        setSite ()
+	 * @param \BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site
 	 *
-	 * @author      Can Berkol
-	 *
-	 * @since       1.0.0
-	 * @version     1.0.0
-	 *
-	 * @param       mixed $site
-	 *
-	 * @return      $this
+	 * @return $this
 	 */
-	public function setSite($site) {
+	public function setSite(\BiberLtd\Bundle\SiteManagementBundle\Entity\Site $site) {
 		if (!$this->setModified('site', $site)->isModified()) {
 			return $this;
 		}
@@ -112,18 +78,3 @@ class DomainAliases extends CoreEntity
 		return $this;
 	}
 }
-/**
- * Change Log:
- * **************************************
- * v1.0.1                      16.07.2015
- * Can Berkol
- * **************************************
- * BF :: Missing primary key definitions added.
- * BF :: schema definition is removed.
- *
- * **************************************
- * v1.0.0                      14.07.2015
- * Can Berkol
- * **************************************
- * FR :: 3806788 :: File created
- */
