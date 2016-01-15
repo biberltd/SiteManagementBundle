@@ -4,7 +4,7 @@ services:
             arguments:    ["@kernel", "default", "doctrine"]
     domain.listener:
             class:        BiberLtd\Bundle\SiteManagementBundle\Listeners\DomainListener
-            arguments:    ["@sitemanagement.model", @kernel]
+            arguments:    ["@sitemanagement.model", "@kernel"]
             tags:
                 -
                     name: kernel.event_listener
