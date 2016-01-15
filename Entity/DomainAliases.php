@@ -48,7 +48,7 @@ class DomainAliases extends CoreEntity
 	 *
 	 * @return $this
 	 */
-	public function setDomain(\string $domain) {
+	public function setDomain(string $domain) {
 		if (!$this->setModified('domain', $domain)->isModified()) {
 			return $this;
 		}

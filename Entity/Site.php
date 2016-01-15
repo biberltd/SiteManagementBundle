@@ -107,7 +107,7 @@ class Site extends CoreEntity{
 	 *
 	 * @return $this
 	 */
-    public function setDescription(\string $description) {
+    public function setDescription(string $description) {
         if(!$this->setModified('description', $description)->isModified()) {
             return $this;
         }
@@ -127,7 +127,7 @@ class Site extends CoreEntity{
 	 *
 	 * @return $this
 	 */
-    public function setDefaultLanguage(\integer $language) {
+    public function setDefaultLanguage(int $language) {
         if(!$this->setModified('default_language', $language)->isModified()) {
             return $this;
         }
@@ -147,7 +147,7 @@ class Site extends CoreEntity{
 	 *
 	 * @return $this
 	 */
-    public function setSettings(\string $settings) {
+    public function setSettings(string $settings) {
         if(!$this->setModified('settings', $settings)->isModified()) {
             return $this;
         }
@@ -167,7 +167,7 @@ class Site extends CoreEntity{
 	 *
 	 * @return $this
 	 */
-    public function setTitle(\string $title) {
+    public function setTitle(string $title) {
         if(!$this->setModified('title', $title)->isModified()) {
             return $this;
         }
@@ -187,7 +187,7 @@ class Site extends CoreEntity{
 	 *
 	 * @return $this
 	 */
-    public function setUrlKey(\string $url_key) {
+    public function setUrlKey(string $url_key) {
         if(!$this->setModified('url_key', $url_key)->isModified()) {
             return $this;
         }
@@ -214,7 +214,7 @@ class Site extends CoreEntity{
 	 *
 	 * @return $this
 	 */
-	public function setDomain(\string $domain) {
+	public function setDomain(string $domain) {
 		if (!$this->setModified('domain', $domain)->isModified()) {
 			return $this;
 		}
