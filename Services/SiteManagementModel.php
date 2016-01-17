@@ -66,7 +66,7 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function deleteSites(array $collection) {
-		$timeStamp = microtime();
+		$timeStamp = microtime(true);
 		$countDeleted = 0;
 		foreach($collection as $entry){
 			if($entry instanceof BundleEntity\Site){
@@ -83,11 +83,11 @@ class SiteManagementModel extends CoreModel{
 			}
 		}
 		if($countDeleted < 0){
-			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime());
+			return new ModelResponse(null, 0, 0, null, true, 'E:E:001', 'Unable to delete all or some of the selected entries.', $timeStamp, microtime(true));
 		}
 		$this->em->flush();
 
-		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime());
+		return new ModelResponse(null, 0, 0, null, false, 'S:D:001', 'Selected entries have been successfully removed from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -97,7 +97,7 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
 	public function doesSiteExist($site, bool $bypass = null) {
-		$timeStamp = microtime();
+		$timeStamp = microtime(true);
 		$bypass = $bypass ?? false;
 		$exist = false;
 
@@ -116,7 +116,7 @@ class SiteManagementModel extends CoreModel{
 		if ($bypass) {
 			return $exist;
 		}
-		return new ModelResponse(true, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime());
+		return new ModelResponse(true, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -126,7 +126,7 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
     public function getDefaultLanguageOfSite($site, bool $bypass = null){
-        $timeStamp = microtime();
+        $timeStamp = microtime(true);
 	    $bypass = $bypass ?? false;
         $response = $this->getSite($site);
         if($response->error->exist){
@@ -134,7 +134,7 @@ class SiteManagementModel extends CoreModel{
         }
         $language = $response->result->set->getDefaultLanguage();
         if(is_null($language)){
-            return new ModelResponse(null, 1, 0, null, error, 'E:S:005', 'Default language is not set.', $timeStamp, microtime());
+            return new ModelResponse(null, 1, 0, null, error, 'E:S:005', 'Default language is not set.', $timeStamp, microtime(true));
         }
 	    /**
 	     * @var \BiberLtd\Bundle\MultiLanguageSupportBundle\Services\MultiLanguageSupportModel @lModel
@@ -148,7 +148,7 @@ class SiteManagementModel extends CoreModel{
         if($bypass){
             return $language;
         }
-        return new ModelResponse($language, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime());
+        return new ModelResponse($language, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
     }
 
 	/**
@@ -157,9 +157,9 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getSite($site) {
-		$timeStamp = microtime();
+		$timeStamp = microtime(true);
 		if($site instanceof BundleEntity\Site){
-			return new ModelResponse($site, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime());
+			return new ModelResponse($site, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 		}
 		$result = null;
 		switch($site){
@@ -177,10 +177,10 @@ class SiteManagementModel extends CoreModel{
 				break;
 		}
 		if(is_null($result)){
-			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime());
+			return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
 
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -189,7 +189,7 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getSiteByDomain(string $domain){
-		$timeStamp = microtime();
+		$timeStamp = microtime(true);
 		$result = $this->em->getRepository($this->entity['s']['name'])->findOneBy(array('domain' => $domain));
 		if(is_null($result)){
 			$response = $this->getSiteOfDomainAlias($domain);
@@ -198,9 +198,9 @@ class SiteManagementModel extends CoreModel{
 			}
 		}
 		if(is_null($result)){
-			return new ModelResponse($result, 1, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime());
+			return new ModelResponse($result, 1, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime());
+		return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -209,14 +209,14 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getSiteOfDomainAlias(string $alias){
-		$timeStamp = microtime();
+		$timeStamp = microtime(true);
 		$result = $this->em->getRepository($this->entity['da']['name'])->findOneBy(array('domain' => $alias));
 
 		if(is_null($result) || $result->getSite() == null){
-			return new ModelResponse($result, 1, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime());
+			return new ModelResponse($result, 1, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
 		}
 		$site = $result->getSite();
-		return new ModelResponse($site, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime());
+		return new ModelResponse($site, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -226,7 +226,7 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function getSiteSettings($site, bool $bypass = null){
-		$timeStamp = microtime();
+		$timeStamp = microtime(true);
 		$bypass = $bypass ?? false;
 		$response = $this->getSite($site);
 
@@ -242,7 +242,7 @@ class SiteManagementModel extends CoreModel{
 			return $settings;
 		}
 
-		return new ModelResponse($settings, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime());
+		return new ModelResponse($settings, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 
 	}
 
@@ -255,7 +255,7 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listDomainAliasesOfSite($site, array $filter = null, array $sortOrder = null, array $limit = null) {
-		$timeStamp = microtime();
+		$timeStamp = microtime(true);
 		$response = $this->getSite($site);
 		if($response->error->exist){
 			return $response;
@@ -306,9 +306,9 @@ class SiteManagementModel extends CoreModel{
 
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -319,7 +319,7 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function listSites(array $filter = null, array $sortOrder = null, array $limit = null) {
-		$timeStamp = microtime();
+		$timeStamp = microtime(true);
 		$oStr = $wStr = $gStr = $fStr = '';
 
 
@@ -360,9 +360,9 @@ class SiteManagementModel extends CoreModel{
 
 		$totalRows = count($result);
 		if ($totalRows < 1) {
-			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime());
+			return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime());
+		return new ModelResponse($result, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -380,7 +380,7 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
 	public function insertSites(array $collection) {
-		$timeStamp = microtime();
+		$timeStamp = microtime(true);
 		$countInserts = 0;
 		$insertedItems = [];
 		foreach($collection as $data){
@@ -415,9 +415,9 @@ class SiteManagementModel extends CoreModel{
 		}
 		if($countInserts > 0){
 			$this->em->flush();
-			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime());
+			return new ModelResponse($insertedItems, $countInserts, 0, null, false, 'S:D:003', 'Selected entries have been successfully inserted into database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:003', 'One or more entities cannot be inserted into database.', $timeStamp, microtime(true));
 	}
 
 	/**
@@ -435,7 +435,7 @@ class SiteManagementModel extends CoreModel{
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
     public function updateSites(array $collection){
-        $timeStamp = microtime();
+        $timeStamp = microtime(true);
         $countUpdates = 0;
         $updatedItems = [];
         foreach($collection as $data){
@@ -493,8 +493,8 @@ class SiteManagementModel extends CoreModel{
         }
 		if($countUpdates > 0){
 			$this->em->flush();
-		return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime());
+		return new ModelResponse($updatedItems, $countUpdates, 0, null, false, 'S:D:004', 'Selected entries have been successfully updated within database.', $timeStamp, microtime(true));
 		}
-		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, microtime());
+		return new ModelResponse(null, 0, 0, null, true, 'E:D:004', 'One or more entities cannot be updated within database.', $timeStamp, microtime(true));
     }
 }

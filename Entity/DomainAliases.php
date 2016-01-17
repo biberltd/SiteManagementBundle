@@ -22,14 +22,14 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
 class DomainAliases extends CoreEntity
 {
     /**
-	 * 
+	 * @ORM\Id
      * @ORM\Column(type="text", unique=true, nullable=true, options={"default":"Alias - domain. i.e. biberltd.com"})
      * @var string
      */
     private $domain;
 
     /**
-	 * 
+	 * @ORM\Id
      * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site", inversedBy="domains")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
      * @var \BiberLtd\Bundle\SiteManagementBundle\Entity\Site
