@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<skipper version="3.2.2.1235" mvc="Symfony2" orm="Doctrine2">
+<skipper version="3.2.4.1256" mvc="Symfony2" orm="Doctrine2">
   <module name="\SiteManagementBundle" local-name="SiteManagementBundle" namespace="\BiberLtd\Bundle\SiteManagementBundle\Entity" local-namespace="BiberLtd\Bundle\SiteManagementBundle\Entity" export-format="Doctrine2Php" export-path="../Entity" uuid="860bb986-ef71-4cef-9da2-f560e58c2569">
     <entity name="\BiberLtd\Bundle\SiteManagementBundle\Entity\Site" local-name="Site" namespace="\BiberLtd\Bundle\SiteManagementBundle\Entity" description="Stores site definitions." uuid="45fa10e6-64bd-4726-82aa-61fd301b1b5f">
       <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="bc017c6b-132e-4cb4-b4d5-fe7363303a48"/>
@@ -66,6 +66,6 @@
   <visual-data>
     <entity uuid="04602777-d7d4-4b5f-9557-c3a1ba1f9dbb" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="350" position-y="100" size-x="0" size-x2="20" size-y="0" size-y2="20"/>
     <entity uuid="45fa10e6-64bd-4726-82aa-61fd301b1b5f" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="50" position-y="50" size-x="0" size-x2="148" size-y="0" size-y2="157"/>
-    <module uuid="860bb986-ef71-4cef-9da2-f560e58c2569" bg-color="#7E7975" size-x="0" size-x2="450" size-y="0" size-y2="327"/>
+    <module uuid="860bb986-ef71-4cef-9da2-f560e58c2569" bg-color="#7E7975" size-x="0" size-x2="490" size-y="0" size-y2="327"/>
   </visual-data>
 </skipper>
