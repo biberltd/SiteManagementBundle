@@ -14,7 +14,7 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
  * @ORM\Entity
  * @ORM\Table(
  *     name="site",
- *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"},
+ *     options={"charset":"utf8","collate":"utf8_turkish_ci"},
  *     indexes={
  *         @ORM\Index(name="idxNSiteDateAdded", columns={"date_added"}),
  *         @ORM\Index(name="idxNSiteDateUpdated", columns={"date_updated"}),
