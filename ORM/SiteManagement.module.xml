@@ -38,8 +38,8 @@
       </orm-attributes>
     </entity>
     <entity name="\BiberLtd\Bundle\SiteManagementBundle\Entity\DomainAliases" local-name="DomainAliases" namespace="\BiberLtd\Bundle\SiteManagementBundle\Entity" description="Holds a list of alternative domains that the site will be served in." uuid="04602777-d7d4-4b5f-9557-c3a1ba1f9dbb">
-      <field name="domain" type="text" default="Alias - domain. i.e. biberltd.com" unique="true" uuid="766b4e3f-328f-4708-a9ff-d82d177d7e5c"/>
-      <field name="site" type="integer" size="10" uuid="defc4d41-db0c-4c89-967f-cd5ebf41f111"/>
+      <field name="domain" description="Alias - domain. i.e. biberltd.com" type="text" required="true" unique="true" primary="true" uuid="766b4e3f-328f-4708-a9ff-d82d177d7e5c"/>
+      <field name="site" description="Site of domain" type="integer" size="10" required="true" primary="true" uuid="defc4d41-db0c-4c89-967f-cd5ebf41f111"/>
       <orm-attributes>
         <attribute name="export-file-name">DomainAliases.php</attribute>
         <attribute name="table">domain_aliases</attribute>
@@ -51,7 +51,7 @@
         </attribute>
       </orm-attributes>
     </entity>
-    <association from="\BiberLtd\Bundle\SiteManagementBundle\Entity\DomainAliases" to="\BiberLtd\Bundle\SiteManagementBundle\Entity\Site" caption="idxFSiteOfDomainAlias" owner-alias="domains" inverse-alias="site" many-owner="true" many-inverse="false" uuid="45c125cd-0ba3-4a9c-973e-92bbcfb91a59">
+    <association from="\BiberLtd\Bundle\SiteManagementBundle\Entity\DomainAliases" to="\BiberLtd\Bundle\SiteManagementBundle\Entity\Site" caption="idxFSiteOfDomainAlias" owner-alias="domains" inverse-alias="site" many-owner="true" many-inverse="false" parent-required="true" uuid="45c125cd-0ba3-4a9c-973e-92bbcfb91a59">
       <association-field from="site" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
