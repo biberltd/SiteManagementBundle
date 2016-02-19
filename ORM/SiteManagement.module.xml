@@ -43,7 +43,6 @@
       <orm-attributes>
         <attribute name="export-file-name">DomainAliases.php</attribute>
         <attribute name="table">domain_aliases</attribute>
-        <attribute name="schema">innodb</attribute>
         <attribute name="options">
           <attribute name="charset">utf8</attribute>
           <attribute name="collate">utf8_turkish_ci</attribute>

@@ -22,8 +22,7 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *     name="domain_aliases",
- *     schema="innodb",
+ *     name="domain_aliases"
  *     options={"charset":"utf8","collate":"utf8_turkish_ci","engine":"innodb"}
  * )
  */
