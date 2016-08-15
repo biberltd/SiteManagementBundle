@@ -17,7 +17,7 @@ CREATE TABLE `domain_aliases` (
   `site` int(10) unsigned NOT NULL COMMENT 'Site that alias belongs to.',
   PRIMARY KEY (`site`,`domain`),
   UNIQUE KEY `idxUSiteDomain` (`domain`,`site`),
-  CONSTRAINT `idxFSiteOfDomain` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idxFSiteOfDomainAlias` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 -- ----------------------------
