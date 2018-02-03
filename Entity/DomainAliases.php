@@ -22,7 +22,7 @@ use BiberLtd\Bundle\CoreBundle\CoreEntity;
 class DomainAliases extends CoreEntity
 {
     /**
-	 * 
+	 * @ORM\Id
      * @ORM\Column(type="text", unique=true, nullable=true, options={"default":"Alias - domain. i.e. biberltd.com"})
      * @var string
      */
@@ -48,7 +48,7 @@ class DomainAliases extends CoreEntity
 	 *
 	 * @return $this
 	 */
-	public function setDomain(\string $domain) {
+	public function setDomain(string $domain) {
 		if (!$this->setModified('domain', $domain)->isModified()) {
 			return $this;
 		}

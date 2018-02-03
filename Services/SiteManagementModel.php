@@ -30,7 +30,7 @@ class SiteManagementModel extends CoreModel{
 	 * @param string $dbConnection
 	 * @param string $orm
 	 */
-    public function __construct($kernel, \string $dbConnection = 'default', \string $orm = 'doctrine'){
+    public function __construct($kernel, string $dbConnection = 'default', string $orm = 'doctrine'){
         parent::__construct($kernel, $dbConnection, $orm);
 
         /**
@@ -99,7 +99,7 @@ class SiteManagementModel extends CoreModel{
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse|bool
 	 */
-	public function doesSiteExist($site, \bool $bypass = false) {
+	public function doesSiteExist($site, bool $bypass = false) {
 		$timeStamp = time();
 		$exist = false;
 
@@ -127,7 +127,7 @@ class SiteManagementModel extends CoreModel{
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-    public function getDefaultLanguageOfSite($site, \bool $bypass = false){
+    public function getDefaultLanguageOfSite($site, bool $bypass = false){
         $timeStamp = time();
         $response = $this->getSite($site);
         if($response->error->exist){
@@ -189,7 +189,7 @@ class SiteManagementModel extends CoreModel{
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getSiteByDomain(\string $domain){
+	public function getSiteByDomain(string $domain){
 		$timeStamp = time();
 		if (!is_string($domain)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be string.', 'E:S:004');
@@ -212,7 +212,7 @@ class SiteManagementModel extends CoreModel{
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getSiteOfDomainAlias(\string $alias){
+	public function getSiteOfDomainAlias(string $alias){
 		$timeStamp = time();
 		if (!is_string($alias)) {
 			return $this->createException('InvalidParameterValueException', 'Invalid parameter value. Parameter must be string.', 'E:S:004');
@@ -232,7 +232,7 @@ class SiteManagementModel extends CoreModel{
 	 *
 	 * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
 	 */
-	public function getSiteSettings($site, \bool $bypass = false){
+	public function getSiteSettings($site, bool $bypass = false){
 		$timeStamp = time();
 		$response = $this->getSite($site);
 
@@ -242,7 +242,6 @@ class SiteManagementModel extends CoreModel{
 
 		$site = $response->result->set;
 
-		$settings = $site->getSettings();
 
 		if($bypass){
 			return $settings;
